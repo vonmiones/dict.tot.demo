@@ -19,7 +19,6 @@
         <div class="flexr wrapper">
             <div class="sidebar">
                 <div class="header">Team Asensos</div>
-                <hr>
                 <ul>
                     <li>Dashboard</li>
                     <li>About</li>
