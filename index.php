@@ -22,12 +22,7 @@
                 <ul>
                     <li>Dashboard</li>
                     <li>About</li>
-                </ul>
-                <div>
-                    breaker
-                </div>
-                <ul>
-                    <li>Dashboard</li>
+                    <span>breaker</span> 
                     <li>About</li>
                 </ul>
             </div>

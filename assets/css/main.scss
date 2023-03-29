@@ -51,7 +51,6 @@ body{
 
 // Sidebars
 .sidebar {
-    align-items: flex-start;
     background-color: var(--pallete-set1-color3);
     display:flex;
     flex-direction: column; 
@@ -65,7 +64,6 @@ body{
     ul{
         padding:0;
         margin:0;
-        line-height: 0;
         li {
             padding:0;
             margin:0;
