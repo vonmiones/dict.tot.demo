@@ -20,7 +20,7 @@
             <div class="sidebar">
                 <div class="sidebar-content">
                     <ul>
-                        <li><div class="header">Team Asenso</div></li>
+                        <li>Team Asenso</li>
                         <li>Dashboard</li>
                         <li>About</li>
                         <span>breaker</span> 
