@@ -37,7 +37,6 @@ body{
     display: flex;
 }
 .flexr {
-    align-items: stretch;
     display: flex;
     flex-direction: row;
     flex-flow: row nowrap;
@@ -53,23 +52,6 @@ body{
 .sidebar {
     background-color: var(--pallete-set1-color3);
     width: 300px;
-    h1{
-        color:var(--pallete-set3-color5);
-        font-size:22pt;
-        text-align: center;
-        text-transform: uppercase;
-    }
-    ul{
-        padding:0;
-        margin:0;
-        li {
-            padding:0;
-            margin:0;
-            .header {
-                height:100px;
-            }           
-        }
-    }
 }
 
 // Content

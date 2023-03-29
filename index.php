@@ -18,13 +18,15 @@
     <div class="container">
         <div class="flexr wrapper">
             <div class="sidebar">
-                <ul>
-                    <li><div class="header">Team Asenso</div></li>
-                    <li>Dashboard</li>
-                    <li>About</li>
-                    <span>breaker</span> 
-                    <li>About</li>
-                </ul>
+                <div class="sidebar-content">
+                    <ul>
+                        <li><div class="header">Team Asenso</div></li>
+                        <li>Dashboard</li>
+                        <li>About</li>
+                        <span>breaker</span> 
+                        <li>About</li>
+                    </ul>
+                </div>
             </div>
             <div class="content"></div>
         </div>
