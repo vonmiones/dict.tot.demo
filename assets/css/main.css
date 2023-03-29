@@ -66,6 +66,9 @@ body {
   margin: 0;
   height: 25px;
 }
+.sidebar ul li .header {
+  height: 100px;
+}
 
 .content {
   width: 90vw;
