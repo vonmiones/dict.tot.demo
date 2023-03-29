@@ -17,10 +17,18 @@
 <body>
     <div class="container">
         <div class="flexr wrapper">
-            <div class="sidebar bg-color">
+            <div class="sidebar">
                 <h1>Team Asenso</h1>
                 <ul>
-                    <li></li>
+                    <li>Dashboard</li>
+                    <li>About</li>
+                </ul>
+                <div>
+                    breaker
+                </div>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>About</li>
                 </ul>
             </div>
             <div class="content"></div>

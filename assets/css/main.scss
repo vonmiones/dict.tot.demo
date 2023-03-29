@@ -51,13 +51,26 @@ body{
 
 // Sidebars
 .sidebar {
-    width: 300px;
+    align-items: flex-start;
     background-color: var(--pallete-set1-color3);
+    display:flex;
+    flex-direction: column; 
+    width: 300px;
     h1{
         color:var(--pallete-set3-color5);
         font-size:22pt;
         text-align: center;
         text-transform: uppercase;
+    }
+    ul{
+        padding:0;
+        margin:0;
+        line-height: 0;
+        li {
+            padding:0;
+            margin:0;
+            height:25px;            
+        }
     }
 }
 
