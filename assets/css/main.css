@@ -50,7 +50,9 @@ body {
   background-color: var(--pallete-set1-color3);
 }
 .sidebar h1 {
+  color: var(--pallete-set3-color5);
   font-size: 22pt;
+  text-align: center;
 }
 
 .content {
