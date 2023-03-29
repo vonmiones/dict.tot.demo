@@ -18,8 +18,8 @@
     <div class="container">
         <div class="flexr wrapper">
             <div class="sidebar">
-                <div class="header">Team Asensos</div>
                 <ul>
+                    <li><div class="header">Team Asenso</div></li>
                     <li>Dashboard</li>
                     <li>About</li>
                     <span>breaker</span> 
