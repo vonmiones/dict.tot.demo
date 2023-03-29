@@ -64,9 +64,11 @@ body {
 .sidebar ul li {
   padding: 0;
   margin: 0;
+  height: 30px;
 }
 .sidebar ul li .header {
   padding: 20px;
+  height: 50px;
 }
 
 .content {
