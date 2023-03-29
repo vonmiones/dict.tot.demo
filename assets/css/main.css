@@ -49,6 +49,9 @@ body {
   width: 300px;
   background-color: var(--pallete-set1-color3);
 }
+.sidebar h1 {
+  font-size: 25pt;
+}
 
 .content {
   width: 90vw;
