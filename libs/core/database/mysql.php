@@ -25,18 +25,30 @@ class MySQLDBHelper
     }
 
     function create(){
-        if(isset($_POST['submit'])){
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $phone = $_POST['phone'];
-            $address = $_POST['address'];
-         
-            $query = "INSERT INTO `users`(`name`, `email`, `phone`, `address`) VALUES ('$name','$email','$phone','$address')";
-            $result = mysqli_query(self::connect(), $query);
-         
-            if($result){
-                return $result;
-            }
+        // prepare the INSERT statement with placeholders for the values
+        $stmt = self::connect()->prepare("
+            INSERT INTO `mytable` 
+            (
+                `objid`, `office`, `lastname`, `firstname`, `middlename`, 
+                `suffix`, `civilstatus`, `nationality`, `ethnicgroup`, 
+                `withchildren`, `ispwd`, `idmulticitizenship`, `isipmember`, 
+                `birthdate`, `addresslotblock`, `addresssubdivision`, 
+                `addresspurok`, `addressbarangay`, `addresscitymun`, 
+                `addressprovince`, `addressdistrict`, `addressregion`, 
+                `addresszipcode`, `bloodtype`, `height`, `weight`, `otherphysical`) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        // bind the values to the placeholders in the prepared statement
+        $stmt->bind_param("ssssssssiiiiissssssssssss", $objid, $office, $lastname, $firstname, $middlename, $suffix, $civilstatus, $nationality, $ethnicgroup, $withchildren, $ispwd, $idmulticitizenship, $isipmember, $birthdate, $addresslotblock, $addresssubdivision, $addresspurok, $addressbarangay, $addresscitymun, $addressprovince, $addressdistrict, $addressregion, $addresszipcode, $bloodtype, $height, $weight, $otherphysical);
+
+        // execute the prepared statement
+        $stmt->execute();
+
+        // check the number of affected rows
+        if ($stmt->affected_rows > 0) {
+            echo "Record created successfully.";
+        } else {
+            echo "Record creation failed.";
         }
     }
     function getAll($sql){
