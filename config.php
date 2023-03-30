@@ -1,10 +1,11 @@
 <?php 
+global $config;
 $config["title"] = "";
 
-$config["dbhost"] = "";
-$config["dbport"] = "";
-$config["dbname"] = "";
-$config["dbuser"] = "";
+$config["dbhost"] = "localhost";
+$config["dbport"] = "3308";
+$config["dbname"] = "dict_tot";
+$config["dbuser"] = "root";
 $config["dbpass"] = "";
 
 $config["theme-default"] = "default";
