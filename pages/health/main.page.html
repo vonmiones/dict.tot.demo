@@ -1,22 +1,22 @@
 <div class="content-wrapper">
   <div class="content-title">TOP 3<span class="title-sub-1"> Diseases</span></div>
   <div class="card-holder">    
-    <div class="child card">
+    <div class="disease-data child card">
       <div class="card-body">
-        <h5 class="card-title">COVID-19</h5>
-        <p class="card-text">Coronavirus disease 2019 (COVID-19) is a contagious disease caused by a virus, the severe acute respiratory syndrome coronavirus 2.</p>
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
       </div>
     </div>
-    <div class="child card">
+    <div class="disease-data child card">
       <div class="card-body">
-        <h5 class="card-title">Dengue fever</h5>
-        <p class="card-text">Dengue (DENG-gey) fever is a mosquito-borne illness that occurs in tropical and subtropical areas of the world. Mild dengue fever causes a high fever and flu-like symptoms.</p>
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
       </div>
     </div>
-    <div class="child card">
+    <div class="disease-data child card">
       <div class="card-body">
-        <h5 class="card-title">Community-acquired pneumonia</h5>
-        <p class="card-text">Community-acquired pneumonia (CAP) refers to pneumonia (any of several lung diseases) contracted by a person outside of the healthcare system.</p>
+        <h5 class="card-title"></h5>
+        <p class="card-text"></p>
       </div>
     </div>
   </div>
@@ -71,6 +71,22 @@ $(document).ready(function() {
       ]
   } );
   dt.ajax.reload();
+  function getTop3Cases() { 
+    $.ajax({
+      url: "api.php?method=get&action=top3diseases",
+      success: function (response) {
+        $(response.data).each(function (i, d) { 
+          let elPanel = $('.disease-data')[i];
+          $(elPanel).find('.card-title').html(d.num_cases);
+          $(elPanel).find('.card-text').html(d.disease);
+        });
+      }
+    });
+   }
+  getTop3Cases();
+  setInterval(() => {
+    getTop3Cases();
+  }, 1000);
   $("#btnDummy").click(function (e) { 
       if (confirm("Do you want to proceed saving your data?") == true) {
         $(".modal-title").empty();
@@ -85,6 +101,7 @@ $(document).ready(function() {
           success: function (response) {
               dt.ajax.reload();
               $("#modal-container").modal("hide");
+              getTop3Cases();
           }
         });
       }
@@ -117,6 +134,7 @@ $(document).ready(function() {
             success: function (response) {   
               if (response.result == "success") {
                 dt.ajax.reload();
+                getTop3Cases();
                 $("#modal-container").modal("hide");
               } else {
                 alert("An error occured during submission,\r\nplease check your data.");

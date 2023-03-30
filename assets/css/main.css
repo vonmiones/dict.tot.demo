@@ -229,4 +229,15 @@ a {
   display: flex;
   gap: 10px;
   align-items: stretch;
+}
+
+.disease-data {
+  width: 15vw;
+  align-items: stretch;
+  flex-grow: 1;
+  margin: 0 auto;
+}
+.disease-data .card-body .card-title {
+  text-align: center;
+  font-size: 70pt !important;
 }/*# sourceMappingURL=main.css.map */

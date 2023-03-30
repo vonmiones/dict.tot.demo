@@ -247,3 +247,16 @@ width: 40%;
     }
   }
 }
+
+.disease-data {
+  width:calc(15vw);
+  align-items: stretch;
+  flex-grow: 1;
+  margin:0 auto;
+  .card-body{
+    .card-title{
+      text-align: center;
+      font-size: 70pt !important;
+    }
+  }
+}

@@ -47,7 +47,7 @@ switch ($method) {
                 $diseases = array("Alzheimer's disease","Parkinson's disease","Multiple sclerosis","Malaria","Tuberculosis","HIV/AIDS","Cancer","Diabetes","Hypertension","Asthma","Arthritis","Epilepsy","Schizophrenia","Depression","Anxiety disorders","Anemia","Hemophilia","Sickle cell anemia","Cystic fibrosis","Influenza","Pneumonia","Cholera","Typhoid fever","Yellow fever","Dengue fever","Chikungunya","Zika virus","Ebola virus disease","Measles","Rubella","Chickenpox","Shingles","Hepatitis B","Hepatitis C","Cirrhosis","Heart disease","Stroke","Kidney disease","Meningitis","Encephalitis","Rabies","Lyme disease","Chlamydia","Gonorrhea","Syphilis","Trichomoniasis","Human papillomavirus (HPV)","Herpes simplex virus","Varicella-zoster virus","West Nile virus","Leukemia","Lymphoma","Melanoma","Bladder cancer","Breast cancer","Colorectal cancer","Lung cancer","Prostate cancer","Ovarian cancer","Pancreatic cancer","Rheumatoid arthritis","Lupus","Psoriasis","Eczema","Acne","Vitiligo","Alopecia","Osteoporosis","Gout","Crohn's disease","Ulcerative colitis","Irritable bowel syndrome (IBS)","Diverticulitis","Celiac disease","Food allergies","Hay fever","Hives","Asthma","Chronic obstructive pulmonary disease (COPD)","Sleep apnea","Chronic fatigue syndrome","Fibromyalgia","Chronic pain","Carpal tunnel syndrome","Tennis elbow","Plantar fasciitis","Osteoarthritis","Sciatica","Scoliosis","Glaucoma","Cataracts","Macular degeneration","Retinopathy","Diabetes-related complications","Hypothyroidism","Hyperthyroidism","Addison's disease","Cushing's syndrome","Polycystic ovary syndrome (PCOS)","Endometriosis");
                 $bloodtype = array("op","om","ap","am","bp","bm","abp","abm");
                 $healthinfo = new HealthInformationClass();
-                for ($i = 0; $i < 100; $i++) {
+                for ($i = 0; $i < 200; $i++) {
                     $i1 = $faker->numberBetween(0, count($barangay)-1);
                     $i2 = $faker->numberBetween(0, count($citymun)-1);
                     $i3 = $faker->numberBetween(0, count($diseases)-1);
@@ -92,7 +92,7 @@ switch ($method) {
                 
             case 'top3diseases':
                     $healthinfo = new HealthInformationClass();
-                    $result = $healthinfo->getTopDiseases(2);
+                    $result = $healthinfo->getTopDiseases(3);
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode(array( "data"=>$result));
                 break;
