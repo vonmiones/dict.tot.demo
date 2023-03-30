@@ -51,7 +51,7 @@ class MySQLDBHelper
         $datastatus = 1;
         
         $stmt = self::connect()->prepare("
-            INSERT INTO `personnel` 
+            INSERT INTO `demoentity` 
             (`fname`, `mname`, `lname`, `suffix`, `sex`, `civilstatus`, 
             `birthdate`, `height`, `weight`, `bloodtype`, `barangay`, 
             `citymun`, `province`, `email`, `contactno`, `contactno2`, 
@@ -80,7 +80,7 @@ class MySQLDBHelper
         self::connect()->close();
     }
     function getAll($sql){
-        $stmt = self::connect()->prepare("SELECT * FROM `personnel`");
+        $stmt = self::connect()->prepare("SELECT * FROM `demoentity`");
 
         $stmt->execute();
 
@@ -133,7 +133,7 @@ class MySQLDBHelper
 
         $search_column = "id";
 
-        $stmt = self::connect()->prepare("SELECT * FROM `personnel` WHERE `$search_column` = ?");
+        $stmt = self::connect()->prepare("SELECT * FROM `demoentity` WHERE `$search_column` = ?");
 
         $stmt->bind_param("i", $id);
 
@@ -238,7 +238,7 @@ class MySQLDBHelper
         $dtupdate = date("Y-m-d H:i:s");
         $remarks = $data["remarks"];
 
-        $stmt = self::connect()->prepare("UPDATE `personnel` SET `fname`=?, `mname`=?, `lname`=?, `suffix`=?, `sex`=?, `civilstatus`=?, `birthdate`=?, `height`=?, `weight`=?, `bloodtype`=?, `barangay`=?, `citymun`=?, `province`=?, `email`=?, `contactno`=?, `contactno2`=?, `isvaccinated`=?, `vaccinedetails`=?, `disease`=?, `symptoms`=?, `medicationdetails`=?, `recommendation`=?, `dtupdate`=?, `remarks`=? WHERE `id`=?");
+        $stmt = self::connect()->prepare("UPDATE `demoentity` SET `fname`=?, `mname`=?, `lname`=?, `suffix`=?, `sex`=?, `civilstatus`=?, `birthdate`=?, `height`=?, `weight`=?, `bloodtype`=?, `barangay`=?, `citymun`=?, `province`=?, `email`=?, `contactno`=?, `contactno2`=?, `isvaccinated`=?, `vaccinedetails`=?, `disease`=?, `symptoms`=?, `medicationdetails`=?, `recommendation`=?, `dtupdate`=?, `remarks`=? WHERE `id`=?");
 
         $stmt->bind_param("sssssssssssssssssssssssi", $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtupdate, $remarks, $id);
 
@@ -257,9 +257,9 @@ class MySQLDBHelper
     }
 
     function delete($data){
-        $id = $data["i
+        $id = $data["i"];
 
-        $stmt = self::connect()->prepare("DELETE FROM `personnel` WHERE `id`=?");
+        $stmt = self::connect()->prepare("DELETE FROM `demoentity` WHERE `id`=?");
 
         $stmt->bind_param("i", $id);
 
