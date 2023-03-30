@@ -9,12 +9,30 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href='assets/css/normalize.css' rel='stylesheet'>
+    <!-- <link href='assets/css/normalize.css' rel='stylesheet'> -->
     <link href='assets/css/main.css' rel='stylesheet'>
+
+    
     <!-- <script src="assets/js/material-ui.production.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" integrity="sha512-2bMhOkE/ACz21dJT8zBOMgMecNxx0d37NND803ExktKiKdSzdwn+L7i9fdccw/3V06gM/DBWKbYmQvKMdAA9Nw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/autofill/2.5.3/css/autoFill.bootstrap5.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
+    <link href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css" rel="stylesheet"/>
+     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.5.3/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.5.3/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.js"></script>
 </head>
 <body>
     <div class="container">
@@ -25,18 +43,16 @@
                         <img class="team-logo" src="assets/images/asenso_logo.png" alt="ASENSO Misamis Occidental">
                     </div>
                     <div class="sidebar-menu">
+                        <div class="logo-wrapper">
+                            <img class="official-logo" src="assets/images/misocc_seal.png" alt="Misamis Occidental Official Seal">
+                        </div>
                         <ul class="sidebar-menu-wrapper">
-                            <li>
-                                <div class="logo-wrapper">
-                                    <img class="official-logo" src="assets/images/misocc_seal.png" alt="Misamis Occidental Official Seal">
-                                </div>
-                            </li>
                             <li><a href="dashboard">Dashboard</a></li>
                             <li><a href="about">About</a></li>
                             <li>
                                 <a href="services">Services</a>
                                 <ul class="list-unstyled">
-                                    <li><a href="#">Health surveillance</a></li>
+                                    <li><a href="health">Health surveillance</a></li>
                                 </ul>
                             </li>
                             <li><a href="contactus">Contact Us</a></li>
@@ -47,5 +63,17 @@
             <div class="content"></div>
         </div>
     </div>
+<script>
+    $(document).ready(function () {
+        $("a").each(function (i, el) { 
+             $(el).click(function (e) { 
+                e.preventDefault();
+                let target = "pages/"+$(el).attr("href")+"/main.page.html";
+                $(".content").load(target, function (response, status, request) { 
+                });
+             });
+        });
+    });
+</script>
 </body>
 </html>

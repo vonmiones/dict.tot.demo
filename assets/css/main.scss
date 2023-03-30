@@ -22,10 +22,46 @@
 
     // Pallete Gradient 1
     --pallete-gradient-color1: linear-gradient(107deg, rgb(255, 67, 5) 11.1%, rgb(245, 135, 0) 95.3%);
-  }
-*{
-    width:100%;
-    height:100%;
+}
+// Global Scrollbar
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffcc00 #DFE9EB;
+  transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 2px;
+  transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);  
+}
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #B8C0C2;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #B67606;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #A3711C;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #E7961C;
 }
 body{
     overflow: hidden;
@@ -52,15 +88,12 @@ a {
 }
 
 // Display
-.flex {
-    display: flex;
-}
 .flexr {
     display: flex;
     flex-direction: row;
     flex-flow: row nowrap;
     flex-wrap: nowrap;
-    height:calc(90vh);
+    height:calc(85vh);
     // width:calc(90vw);
     margin-top:calc(6vh);
     // margin-left:calc(5vw);
@@ -71,14 +104,14 @@ a {
   
   // Sidebars
   .sidebar {
-    width: 300px;
+    width: 200px;
     display: flex;
-    height:calc(80vh);
+    // height:calc(80vh);
     .sidebar-content{
       .header {
         height: 50px;
         .team-logo {
-          height: 70px;
+          height: 50px;
           // margin-top:-10px;
           align-items: center;
         }
@@ -89,7 +122,7 @@ a {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     overflow: hidden;
-    margin-top:20px;
+    height: calc(70vh);
     background: var(--pallete-gradient-color1);
     .logo-wrapper{
       margin-bottom:30px;
@@ -98,16 +131,16 @@ a {
       width: 100px;
       height: 100px;
       margin-left:20%;
+      margin-top:10px;
       align-items: center;
     }
-    height: fit-content;
     .sidebar-menu-wrapper {
-        height: fit-content;
+       
         margin-top:10px;
         padding: 0;
         list-style: none;
         li{
-          padding-left:20px;
+          padding-left:10px;
           padding-top:5px;
           padding-bottom:5px;
           font-size: smaller;
@@ -134,50 +167,61 @@ a {
 
 // Content
 .content {
+  overflow: auto;
   border-radius: 10px;
   width:calc(90vw);
   background-color: var(--pallete-set3-color5);
 }
 
-
-// Global Scrollbar
-
-
-/* Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #ffcc00 #DFE9EB;
-    transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+// Page : main.page.html
+.content-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  padding:10px;
+  .card-holder {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    flex-flow: row nowrap;
+    gap:10px;
+    height: fit-content;
+    padding:10px;
+  }
 }
 
-  /* Chrome, Edge and Safari */
-  *::-webkit-scrollbar {
-    width: 2px;
-    transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);  
-}
-  *::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background-color: #DFE9EB;
+.child {
+width: 40%;
 }
 
-  *::-webkit-scrollbar-track:hover {
-    background-color: #B8C0C2;
+.content-title {
+  padding-left:10px;
+  margin:0;
+  font-size: 25pt;
+  span.title-sub-1{
+    font-size: 18pt;
+  }
 }
-
-  *::-webkit-scrollbar-track:active {
-    background-color: #B8C0C2;
+.card-text {
+  font-size: 10pt;
 }
-
-  *::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #B67606;
+.activity-btn  {
+  cursor: pointer;
+  padding: 5px;
+  width: 120px;
+  border-radius: 5px;
+  text-align: center;
 }
-
-  *::-webkit-scrollbar-thumb:hover {
-    background-color: #A3711C;
+#myTable {
+  width: 100%;
 }
-
-  *::-webkit-scrollbar-thumb:active {
-    background-color: #E7961C;
+.dataTables_wrapper {
+  width: calc(64vw);
+  margin:0 auto;
+}
+#myTable tbody tr{
+  font-size: 10pt;
 }
