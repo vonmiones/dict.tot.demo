@@ -24,6 +24,7 @@
     <div class="btn btn-primary" id="addnewdata">Add Data</div>
     <div class="btn btn-primary" id="btnDummy">Generate Dummy Data</div>
   </div>
+
   <div class="card-holder">
     <table id="myTable" class="stripe compact">
       <thead>
@@ -31,9 +32,12 @@
               <th>Name</th>
               <th>Sex</th>
               <th>Birth Date</th>
-              <th>Case</th>
+              <th>Temp</th>
+              <th>COVID-19 Diagnosed</th>
+              <th>COVID-19 Encounter</th>
               <th>Is Vaccinated</th>
-              <th>Address</th>
+              <th>City / Municipality</th>
+              <th>Actions</th>
           </tr>
       </thead>
       <tbody>
@@ -43,9 +47,13 @@
               <th>Name</th>
               <th>Sex</th>
               <th>Birth Date</th>
-              <th>Case</th>
+              <th>Temp</th>
+              <th>COVID-19 Diagnosed</th>
+              <th>COVID-19 Encounter</th>
               <th>Is Vaccinated</th>
-              <th>Address</th>
+              <th>Nationality</th>
+              <th>City / Municipality</th>
+              <th>Actions</th>
           </tr>
       </tfoot>
   </table>
@@ -55,6 +63,27 @@
 
 <script>
 $(document).ready(function() {
+  function deleteData(id){
+    if (confirm("Do you want to proceed deleting this data?") == true) {
+      $(".modal-title").empty();
+      $(".modal-footer").empty();
+      $(".modal-body").empty();
+      $("#modal-container").modal("show");
+      $(".modal-title").text("Health Information Form Data");
+      $(".modal-body").text("Please wait as we process the deletion of data.");
+      $.ajax({
+        url: "api.php?method=get&action=delete&id="+id,
+        success: function (response) {
+          dt.ajax.reload();
+          getTop3Cases();
+          $("#modal-container").modal("hide");
+        }
+      });
+    }
+    else{
+
+    }
+  }
   var dt = $('#myTable').DataTable( {
       "bAutoWidth": false,
       ajax: 'api.php?method=get&action=all',
@@ -63,17 +92,58 @@ $(document).ready(function() {
             { data: 'sex' },
             { data: 'birthdate' },
             { data: 'disease' },
+            { data: 'temp' },
+            { data: 'coviddiagnosed' },
+            { data: 'covidencounter' },
             { data: 'isvaccinated' },
             { data: 'citymun' },
+            { data: 'country' },
+            { data: 'id' },
         ],
       buttons: [
           'copy', 'excel', 'pdf'
+      ],
+      'createdRow': function( row, data, dataIndex ) {
+          $(row).attr('data-id', data.id);
+      },
+      'columnDefs': [
+        {
+            'targets': 10,
+            'createdCell':  function (td, cellData, rowData, row, col) {
+              $(td).html('<a class="table-action" href="api.php?method=get&action=edit&id='+rowData.id+'"><i class="fa-solid fa-file-pen"></i></a> <a id="btnDelete" data-id="'+rowData.id+';" class="table-action"><i class="fa-solid fa-trash-can"></i></a>')
+              $(td).find("#btnDelete").click(function (e) { 
+                if (confirm("Do you want to delete this data?") == true) {
+                  $(".modal-title").empty();
+                  $(".modal-footer").empty();
+                  $(".modal-body").empty();
+                  $("#modal-container").modal("show");
+                  $(".modal-title").text("Health Information Form Data");
+                  $(".modal-body").text("Please wait as we process the deletion of the data.");
+                  $.ajax({
+                    type: "GET",
+                    url: "api.php?method=get&action=delete&id="+$(this).data("id"),
+                    success: function (response) {
+                      setTimeout(() => {                        
+                        $("#modal-container").modal("hide");
+                          dt.ajax.reload();
+                          getTop3Cases();
+                      }, 500);
+                    }
+                  });
+                }
+                else{
+
+                }
+              });
+            }
+        }
       ]
   } );
+
   dt.ajax.reload();
   function getTop3Cases() { 
     $.ajax({
-      url: "api.php?method=get&action=top3diseases",
+      url: "api.php?method=get&action=topdiseases&count=3",
       success: function (response) {
         $(response.data).each(function (i, d) { 
           let elPanel = $('.disease-data')[i];

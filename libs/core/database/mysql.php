@@ -70,6 +70,24 @@ class MySQLDBHelper
         $conn->close();
         return $rows;
     }
+    function selectCustomData($sql) {
+        $conn = self::connect();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $result = $conn->query($sql);
+
+        $rows = array();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $rows[] = $row;;
+            }
+        } else {
+            $result = "0 results";
+        }
+        $conn->close();
+        return $rows;
+    }
     
     function getAll(){
         $conn = self::connect();
@@ -191,23 +209,25 @@ class MySQLDBHelper
     }
 
     function delete($data){
-        $id = $data["i"];
-
-        $stmt = self::connect()->prepare("DELETE FROM `demoentity` WHERE `id`=?");
-
-        $stmt->bind_param("i", $id);
-
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            echo "Record deleted successfully.";
-        } else {
-            echo "Record was not deleted.";
+        $id = $data["id"];
+        // Create connection
+        $conn = self::connect();
+        // Check connection
+        if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
         }
 
-        $stmt->close();
-        self::connect() ->close();
+        // sql to delete a record
+        $sql = "DELETE FROM demoentity WHERE id=$id";
 
+        if ($conn->query($sql) === TRUE) {
+        $result = "Record deleted successfully";
+        } else {
+        $result = "Error deleting record: " . $conn->error;
+        }
+
+        $conn->close();
+        return array("result"=>"success","message"=>"ID: $data,  $result");
     }
 
 

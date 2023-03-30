@@ -1,0 +1,87 @@
+<div class="content-wrapper">
+    <div class="content-title">TOP 4<span class="title-sub-1"> Diseases</span></div>
+    <div class="card-holder">
+      <div class="disease-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+      <div class="disease-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+      <div class="disease-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+      <div class="disease-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-title">COVID-19<span class="title-sub-1"> Updates</span></div>
+    <div class="card-holder">
+      <div class="encounter-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text">COVID-19 ENCOUNTERS</p>
+        </div>
+      </div>
+      <div class="diagnosed-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text">DIAGNOSED WITH COVID-19</p>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    
+  </div>
+  
+  <script>
+  $(document).ready(function() {
+
+    function getTop3Cases() { 
+      $.ajax({
+        url: "api.php?method=get&action=topdiseases&count=4",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            let elPanel = $('.disease-data')[i];
+            $(elPanel).find('.card-title').html(d.num_cases);
+            $(elPanel).find('.card-text').html(d.disease);
+          });
+        }
+      });
+     }
+
+    function getCovidData() { 
+      $.ajax({
+        url: "api.php?method=get&action=coviddata",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            console.log(d);
+            $(".encounter-data").find('.card-title').html(d.encounter);
+            $(".diagnosed-data").find('.card-title').html(d.diagnosed);
+          });
+        }
+      });
+     }
+
+    getTop3Cases();
+    getCovidData();
+    setInterval(() => {
+      getTop3Cases();
+      getCovidData();
+    }, 1000);
+
+  } );
+  </script>

@@ -80,7 +80,7 @@
                 </div> 
             </div>
             <div>Contact Information</div>
-            <div class="form-wrapper">
+            <!-- <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
                     <input name="barangay" required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Barangay</label>
@@ -92,6 +92,26 @@
                 <div class="form-floating" style="flex-grow: 1;">
                     <input name="province" required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Province</label>
+                </div>
+            </div> -->
+            <div class="form-wrapper">
+                <div class="form-floating" style="flex-grow: 1;">
+                    <select name="coviddiagnosed" required class="form-select" id="selectCOVID-19Diagnosed" aria-label="COVID-19 Diagnosed Options">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                    <label for="floatingSelect">COVID-19 Diagnosed</label>
+                </div>
+                <div class="form-floating" style="flex-grow: 1;">
+                    <select name="covideencounter" required class="form-select" id="selectCOVID-19Encounter" aria-label="COVID-19 Encounter Options">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                    <label for="floatingSelect">COVID-19 Encounter</label>
+                </div>
+                <div class="form-floating" >
+                    <input name="temp" required type="number" step=".01" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="txbTemp" placeholder="Temp">
+                    <label for="txbTemp">Temperature<sup>(<i> Celcius </i>)</sup> </label>
                 </div>
             </div>
             <div class="form-wrapper">
@@ -131,14 +151,7 @@
             </div>
             <div class="form-wrapper">
                 <div class="form-floating">
-                    <select name="disease" required class="form-select" id="selectSex" aria-label="Disease Information">
-                        <option value="covid19">COVID-19</option>
-                        <option value="denguefever">Dengue Fever</option>
-                        <option value="cap">Community-acquired pneumonia</option>
-                        <option value="leptos">Leptospirosis</option>
-                        <option value="rabies">Rabies</option>
-                        <option value="malaria">Malaria</option>
-                        <option value="h1n1">AH1N1</option>
+                    <select name="disease" required class="form-select" id="selectDiseases" aria-label="Disease Information">
                     </select>
                     <label for="floatingSelect">Disease Information</label>
                 </div>
@@ -169,5 +182,22 @@
 <script>
     $("#chkVaccinated").change(function() {
         $(this).val($(this).prop('checked'));
+    });
+    $(document).ready(function () {
+        function getDiseaseList() { 
+            $.ajax({
+                url: "api.php?method=get&action=diseaseslist",
+                success: function (d) {
+                    console.log(d);
+                    $(d.data).each(function (i, d) { 
+                        let o = $("<option>");
+                        $(o).val(d.name);
+                        $(o).text(d.name);
+                        $(o).appendTo("#selectDiseases");
+                    });
+                }
+            });
+         }
+         getDiseaseList();
     });
 </script>

@@ -149,7 +149,7 @@ a {
 .content {
   overflow: auto;
   border-radius: 10px;
-  width: 90vw;
+  width: 95vw;
   background-color: var(--pallete-set3-color5);
 }
 
@@ -175,7 +175,7 @@ a {
 }
 
 .child {
-  width: 40%;
+  width: 100%;
 }
 
 .content-title {
@@ -210,6 +210,9 @@ a {
 #myTable tbody tr {
   font-size: 10pt;
 }
+#myTable tbody tr td {
+  cursor: pointer;
+}
 
 .modal-container {
   z-index: 1;
@@ -231,13 +234,21 @@ a {
   align-items: stretch;
 }
 
+.encounter-data,
+.diagnosed-data,
 .disease-data {
-  width: 15vw;
+  width: 12vw;
   align-items: stretch;
   flex-grow: 1;
   margin: 0 auto;
 }
+.encounter-data .card-body .card-title,
+.diagnosed-data .card-body .card-title,
 .disease-data .card-body .card-title {
   text-align: center;
-  font-size: 70pt !important;
+  font-size: 60pt !important;
+}
+
+.table-action {
+  color: rgb(185, 72, 19);
 }/*# sourceMappingURL=main.css.map */
