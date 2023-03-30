@@ -236,6 +236,7 @@ a {
 
 .encounter-data,
 .diagnosed-data,
+.mostinfected-data,
 .disease-data {
   width: 12vw;
   align-items: stretch;
@@ -244,6 +245,7 @@ a {
 }
 .encounter-data .card-body .card-title,
 .diagnosed-data .card-body .card-title,
+.mostinfected-data .card-body .card-title,
 .disease-data .card-body .card-title {
   text-align: center;
   font-size: 60pt !important;

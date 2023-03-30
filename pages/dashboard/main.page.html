@@ -41,6 +41,13 @@
           <p class="card-text">DIAGNOSED WITH COVID-19</p>
         </div>
       </div>
+      <div class="mostinfected-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <h6 class="card-title2"></h6>
+          <p class="card-text">MOST INFECTED COUNTRY</p>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -63,6 +70,20 @@
       });
      }
 
+    function getCovidDataPerCountry() { 
+      $.ajax({
+        url: "api.php?method=get&action=covidpercountry&count=1",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            let elPanel = $('.mostinfected-data')[i];
+            $(elPanel).find('.card-title').html(d.num_cases);
+            $(elPanel).find('.card-title2').html(d.country);
+            console.log(d);
+          });
+        }
+      });
+     }
+
     function getCovidData() { 
       $.ajax({
         url: "api.php?method=get&action=coviddata",
@@ -75,12 +96,13 @@
         }
       });
      }
-
+    getCovidDataPerCountry();
     getTop3Cases();
     getCovidData();
     setInterval(() => {
-      getTop3Cases();
-      getCovidData();
+        getTop3Cases();
+        getCovidData();
+        getCovidDataPerCountry();
     }, 1000);
 
   } );

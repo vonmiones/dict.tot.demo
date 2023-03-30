@@ -23,6 +23,11 @@ class HealthInformationClass
         return $result;
     }
 
+    function getTopCountriesWithCovid($limit=2){
+        $result = self::db()->selectCustomData("SELECT country, COUNT(*) AS num_cases FROM demoentity WHERE coviddiagnosed = 1 GROUP BY country ORDER BY num_cases DESC LIMIT ".$limit);
+        return $result;
+    }
+
     function getAllCovidData(){
         $result = self::db()->selectCustomData("SELECT (SELECT COUNT(*) FROM demoentity WHERE covidencounter = 1 ) AS encounter, (SELECT COUNT(*) FROM demoentity WHERE coviddiagnosed = 1) as diagnosed;");
         return $result;

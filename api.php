@@ -112,6 +112,13 @@ switch ($method) {
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode(array( "data"=>$result));
                 break;
+            case 'covidpercountry':
+                    $healthinfo = new HealthInformationClass();
+                    $count = isset($_GET["count"])?$_GET["count"]:3;
+                    $result = $healthinfo->getTopCountriesWithCovid($count);
+                    header("Content-type: application/json; charset=utf-8");
+                    echo json_encode(array( "data"=>$result));
+                break;
                 
             case 'diseaseslist':
                     $healthinfo = new HealthInformationClass();
