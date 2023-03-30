@@ -71,17 +71,7 @@ $(document).ready(function() {
       ]
   } );
   dt.ajax.reload();
-  $("#addnewdata").click(function (e) { 
-    e.preventDefault();
-    $(".modal-title").empty();
-    $(".modal-footer").empty();
-    $(".modal-body").empty();
-    $(".modal-title").text("Health Information Form");
-    $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
-    $(".modal-body").load("pages/health/entity.information.form.html", function (response, status, request) {
-      $("#modal-container").modal("show");
-    });
-    $("#btnDummy").click(function (e) { 
+  $("#btnDummy").click(function (e) { 
       if (confirm("Do you want to proceed saving your data?") == true) {
         $.ajax({
           type: "GET",
@@ -96,6 +86,17 @@ $(document).ready(function() {
       else{
         alert("Transaction Aborted");
       }
+    });
+    
+  $("#addnewdata").click(function (e) { 
+    e.preventDefault();
+    $(".modal-title").empty();
+    $(".modal-footer").empty();
+    $(".modal-body").empty();
+    $(".modal-title").text("Health Information Form");
+    $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
+    $(".modal-body").load("pages/health/entity.information.form.html", function (response, status, request) {
+      $("#modal-container").modal("show");
     });
     $("#btnSave").click(function (e) { 
       let message;
