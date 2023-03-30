@@ -5,22 +5,11 @@
 require_once "controllers/health.controller.php";
 $method = "";
 $action = "";
-if(isset($_POST)){
-    $method = isset($_POST["method"])? $_POST["method"] :"";
-    $action = isset($_POST["action"])? $_POST["action"] :"";
-}else {
+
+if(isset($_GET["method"])){
     $method = isset($_GET["method"])? $_GET["method"] :"";
     $action = isset($_GET["action"])? $_GET["action"] :"";
 }
-
-if(isset($_GET)){
-    $method = isset($_GET["method"])? $_GET["method"] :"";
-    $action = isset($_GET["action"])? $_GET["action"] :"";
-}else{
-    $method = isset($_POST["method"])? $_POST["method"] :"";
-    $action = isset($_POST["action"])? $_POST["action"] :"";
-}
-
 
 switch ($method) {
     case 'post':
@@ -89,7 +78,7 @@ switch ($method) {
                         $data["recommendation"] =  "";
                         $healthinfo->addNewCase($data);
                     }
-                    echo array("result"=>"success","message"=>"Dummy data Initialized");
+                    echo json_encode(array("result"=>"success","message"=>"Dummy data Initialized"));
                     break;
                 case 'all':
                         $healthinfo = new HealthInformationClass();

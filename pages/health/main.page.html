@@ -73,13 +73,18 @@ $(document).ready(function() {
   dt.ajax.reload();
   $("#btnDummy").click(function (e) { 
       if (confirm("Do you want to proceed saving your data?") == true) {
+        $(".modal-title").empty();
+        $(".modal-footer").empty();
+        $(".modal-body").empty();
+        $("#modal-container").modal("show");
+        $(".modal-title").text("Health Information Form Data");
+        $(".modal-body").text("Please wait as we populate the dummy data");        
         $.ajax({
           type: "GET",
           url: "api.php?method=get&action=dummy",
           success: function (response) {
               dt.ajax.reload();
               $("#modal-container").modal("hide");
-              alert(response.message);
           }
         });
       }
@@ -105,10 +110,8 @@ $(document).ready(function() {
           let frmData = $("form").serializeArray();
           $.ajax({
             type:"POST",
-            url: "api.php",
+            url: "api.php?method=post&action=create",
             data: {
-              "method":"post",
-              "action":"create",
               "data":frmData
             },
             success: function (response) {   
