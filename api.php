@@ -4,25 +4,51 @@
 
 require_once "controllers/health.controller.php";
 $method = "";
+$action = "";
 if(isset($_POST)){
-    $method = array("method"=>"get","request"=>isset($_POST["method"])? $_POST["method"]:"");
+    $method = isset($_POST["method"])? $_POST["method"] :"";
+    $action = isset($_POST["action"])? $_POST["action"] :"";
+}else{
+    $method = isset($_GET["method"])? $_GET["method"] :"";
+    $action = isset($_GET["action"])? $_GET["action"] :"";
 }
-if(isset($_GET)){
-    $method = array("method"=>"get","request"=>isset($_GET["method"])? json_encode($_GET["method"]):"");
-}
-switch ($method["method"]) {
+
+switch ($method) {
     case 'post':
-            echo "post";
+            switch ($action) {
+                case 'update':
+                    break;
+                case 'create':
+                        $request = "";
+                        $data = array();
+                        foreach ($_POST['data']  as $key => $value) {
+                            $data[$value['name']] = $value['value'];
+                        }
+                        $healthinfo = new HealthInformationClass();
+                        $result = $healthinfo->addNewCase($data);
+                        header("Content-type: application/json; charset=utf-8");
+                        echo json_encode($result);
+                    break;
+                
+            }
         break;
         case 'get':
-            $request = "";
-            $data = array();
-            foreach ($_GET['data']  as $key => $value) {
-                $data[$value['name']] = $value['value'];
+            switch ($action) {
+                case 'update':
+                    break;
+                case 'all':
+                        $request = "";
+                        $data = array();
+                        foreach ($_POST['data']  as $key => $value) {
+                            $data[$value['name']] = $value['value'];
+                        }
+                        $healthinfo = new HealthInformationClass();
+                        $result = $healthinfo->getAll();
+                        header("Content-type: application/json; charset=utf-8");
+                        echo json_encode($result);
+                    break;
+                
             }
-            $healthinfo = new HealthInformationClass();
-            $result = $healthinfo->addNewCase($data);
-            echo "Get " . json_encode( $result);
         break;
     default:
             http_response_code(404);

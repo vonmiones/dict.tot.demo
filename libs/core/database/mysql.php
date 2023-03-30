@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL ^ E_WARNING); 
 class MySQLDBHelper
 {
     function __construct() {
@@ -12,8 +13,8 @@ class MySQLDBHelper
         $servername = $config["dbhost"];
         $port = $config["dbport"];
         $username = $config["dbuser"];
-        $password = "";
-        $dbname = $config["dbpass"];
+        $password = $config["dbpass"];
+        $dbname = $config["dbname"];
     
         return new mysqli($servername, $username, $password, $dbname, $port);
     
@@ -23,28 +24,31 @@ class MySQLDBHelper
     }
     function create($data) {
         $conn = self::connect();
-        // build the query string and placeholders
+        $table = "demoentity";
         $fields = implode(", ", array_keys($data));
         $placeholders = implode(", ", array_fill(0, count($data), "?"));
-        $sql = "INSERT INTO `demoentity` ($fields) VALUES ($placeholders)";
+        $sql = "INSERT INTO $table ($fields) VALUES ($placeholders)";
         
-        try {
-            $stmt = $conn->prepare($sql);
-            if (!$stmt) {
-                throw new Exception("Failed to prepare statement");
-            }
-            
-            $values = array_values($data);
-            $result = $stmt->execute($values);
-            if (!$result) {
-                throw new Exception("Failed to execute statement");
-            }
-            
-            return $stmt->rowCount();
-        } catch (Exception $e) {
-            error_log("Error inserting data: " . $e->getMessage());
-            return "Error inserting data: " . $e . "\r\n query: " . $sql;
+        $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            error_log("Error preparing statement: " . mysqli_error($conn));
+            return false;
         }
+        
+        $values = array_values($data);
+        $types = str_repeat("s", count($data));
+        array_unshift($values, $types);
+        
+        call_user_func_array("mysqli_stmt_bind_param", array_merge(array($stmt), $values));
+        
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            error_log("Error executing statement: " . mysqli_error($conn));
+            return false;
+        }
+        $affected_rows = mysqli_stmt_affected_rows($stmt);
+        mysqli_stmt_close($stmt);
+        return array("result"=>"success","message"=>$affected_rows);
     }
     function create1($data){
 
