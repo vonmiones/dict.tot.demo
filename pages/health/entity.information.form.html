@@ -54,14 +54,16 @@
                 <div class="form-floating">
                     <input type="date" class="form-control" id="txbBirthday" placeholder="Birthday">
                     <label for="txbBirthday">Birthday</label>
-                </div>
+                </div>               
+            </div>
+            <div class="form-wrapper">
                 <div class="form-floating" >
                     <input type="number" class="form-control" id="txbHeight" placeholder="Height">
-                    <label for="txbHeight">Height</label>
+                    <label for="txbHeight">Height<sup>(<i> cm </i>)</sup> </label>
                 </div>
                 <div class="form-floating" >
                     <input type="number" class="form-control" id="txbWeight" placeholder="Weight">
-                    <label for="txbWeight">Weight</label>
+                    <label for="txbWeight">Weight<sup>(<i> kilo </i>)</sup></label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
                     <select class="form-select" id="selectSex" aria-label="Blood Type Options">
@@ -75,7 +77,7 @@
                         <option value="abm">AB-</option>
                     </select>
                     <label for="floatingSelect">Blood Type</label>
-                </div>                
+                </div> 
             </div>
             <div>Contact Information</div>
             <div class="form-wrapper">
@@ -107,6 +109,20 @@
                 </div>
             </div>
             <div>Disease Information</div>
+            <div class="form-wrapper">
+                <div class="form-floating" style="flex-grow: 1;">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Person is Vaccinated
+                        </label>
+                    </div>
+                </div>
+                <div class="form-floating" style="flex-grow: 1;">
+                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <label for="txbAddress">Vaccine Details</label>
+                </div> 
+            </div>
             <div class="form-wrapper">
                 <div class="form-floating">
                     <select class="form-select" id="selectSex" aria-label="Disease Information">
