@@ -222,6 +222,18 @@ width: 100%;
   width: calc(56vw);
   margin:0 auto;
 }
+#myTable thead th{
+  font-size: 11pt;
+  td{
+    cursor: pointer;
+  }
+}
+#myTable tfoot th{
+  font-size: 11pt;
+  td{
+    cursor: pointer;
+  }
+}
 #myTable tbody tr{
   font-size: 10pt;
   td{
