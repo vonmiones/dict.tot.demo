@@ -22,7 +22,7 @@
   </div>
   <div class="card-holder">
     <div class="btn btn-primary" id="addnewdata">Add Data</div>
-    <div class="btn btn-primary" id="addnewdata">Generate Dummy Data</div>
+    <div class="btn btn-primary" id="btnDummy">Generate Dummy Data</div>
   </div>
   <div class="card-holder">
     <table id="myTable" class="stripe compact">
@@ -80,6 +80,22 @@ $(document).ready(function() {
     $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
     $(".modal-body").load("pages/health/entity.information.form.html", function (response, status, request) {
       $("#modal-container").modal("show");
+    });
+    $("#btnDummy").click(function (e) { 
+      if (confirm("Do you want to proceed saving your data?") == true) {
+        $.ajax({
+          type: "GET",
+          url: "api.php?method=get&action=dummy",
+          success: function (response) {
+              dt.ajax.reload();
+              $("#modal-container").modal("hide");
+              alert(response.message);
+          }
+        });
+      }
+      else{
+        alert("Transaction Aborted");
+      }
     });
     $("#btnSave").click(function (e) { 
       let message;
