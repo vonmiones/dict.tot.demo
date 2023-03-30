@@ -7,7 +7,7 @@ class MySQLDBHelper
 
     function connect(){
         global $config;
-        require_once("../../../config.php");
+        require_once("config.php");
 
         $servername = $config["dbhost"];
         $port = $config["dbport"];
@@ -21,34 +21,56 @@ class MySQLDBHelper
             die("Connection failed: " . self::connect()->connect_error);
         }
     }
+    function create($data) {
+        $conn = self::connect();
+        // build the query string and placeholders
+        $fields = implode(", ", array_keys($data));
+        $placeholders = implode(", ", array_fill(0, count($data), "?"));
+        $sql = "INSERT INTO `demoentity` ($fields) VALUES ($placeholders)";
+        
+        try {
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement");
+            }
+            
+            $values = array_values($data);
+            $result = $stmt->execute($values);
+            if (!$result) {
+                throw new Exception("Failed to execute statement");
+            }
+            
+            return $stmt->rowCount();
+        } catch (Exception $e) {
+            error_log("Error inserting data: " . $e->getMessage());
+            return "Error inserting data: " . $e . "\r\n query: " . $sql;
+        }
+    }
+    function create1($data){
 
-    function create($data){
-        $fname = $data["fname"];
-        $mname = $data["mname"];
-        $lname = $data["lname"];
-        $suffix = $data["suffix"];
-        $sex = $data["sex"];
-        $civilstatus = $data["civilstatus"];
-        $birthdate = $data["birthdate"];
-        $height = $data["height"];
-        $weight = $data["weight"];
-        $bloodtype = $data["bloodtype"];
-        $barangay = $data["barangay"];
-        $citymun = $data["citymun"];
-        $province = $data["province"];
-        $email = $data["email"];
-        $contactno = $data["contactno"];
-        $contactno2 = $data["contactno2"];
-        $isvaccinated = $data["isvaccinated"];
-        $vaccinedetails = $data["vaccinedetails"];
-        $disease = $data["disease"];
-        $symptoms = $data["symptoms"];
-        $medicationdetails = $data["medicationdetails"];
-        $recommendation = $data["recommendation"];
-        $dtcreated = date("Y-m-d H:i:s");
-        $dtupdate = date("Y-m-d H:i:s");
-        $remarks = $data["remarks"];
-        $datastatus = 1;
+        $conn = self::connect();
+        $fname = mysqli_real_escape_string($conn, $data["fname"]);
+        $mname = mysqli_real_escape_string($conn, $data["mname"]);
+        $lname = mysqli_real_escape_string($conn, $data["lname"]);
+        $suffix = mysqli_real_escape_string($conn, $data["suffix"]);
+        $sex = mysqli_real_escape_string($conn, $data["sex"]);
+        $civilstatus = mysqli_real_escape_string($conn, $data["civilstatus"]);
+        $birthdate = mysqli_real_escape_string($conn, $data["birthdate"]);
+        $height = mysqli_real_escape_string($conn, $data["height"]);
+        $weight = mysqli_real_escape_string($conn, $data["weight"]);
+        $bloodtype = mysqli_real_escape_string($conn, $data["bloodtype"]);
+        $barangay = mysqli_real_escape_string($conn, $data["barangay"]);
+        $citymun = mysqli_real_escape_string($conn, $data["citymun"]);
+        $province = mysqli_real_escape_string($conn, $data["province"]);
+        $email = mysqli_real_escape_string($conn, $data["email"]);
+        $contactno = mysqli_real_escape_string($conn, $data["contactno"]);
+        $contactno2 = mysqli_real_escape_string($conn, $data["contactno2"]);
+        $isvaccinated = mysqli_real_escape_string($conn, $data["isvaccinated"]);
+        $vaccinedetails = mysqli_real_escape_string($conn, $data["vaccinedetails"]);
+        $disease = mysqli_real_escape_string($conn, $data["disease"]);
+        $symptoms = mysqli_real_escape_string($conn, $data["symptoms"]);
+        $medicationdetails = mysqli_real_escape_string($conn, $data["medicationdetails"]);
+        $recommendation = mysqli_real_escape_string($conn, $data["recommendation"]);
         
         $stmt = self::connect()->prepare("
             INSERT INTO `demoentity` 
@@ -56,17 +78,15 @@ class MySQLDBHelper
             `birthdate`, `height`, `weight`, `bloodtype`, `barangay`, 
             `citymun`, `province`, `email`, `contactno`, `contactno2`, 
             `isvaccinated`, `vaccinedetails`, `disease`, `symptoms`, 
-            `medicationdetails`, `recommendation`, `dtcreated`, `dtupdate`, 
-            `remarks`, `datastatus`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            `medicationdetails`, `recommendation`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 
-        $stmt->bind_param("ssssssssssssssssssssssssi", 
+        $stmt->bind_param("ssssssssssssssssssssss", 
         $fname, $mname, $lname, $suffix, $sex, $civilstatus, 
         $birthdate, $height, $weight, $bloodtype, 
         $barangay, $citymun, $province, $email, $contactno, 
         $contactno2, $isvaccinated, $vaccinedetails, $disease, 
-        $symptoms, $medicationdetails, $recommendation, $dtcreated, 
-        $dtupdate, $remarks, $datastatus);
+        $symptoms, $medicationdetails, $recommendation);
 
         $stmt->execute();
 
@@ -79,7 +99,7 @@ class MySQLDBHelper
         $stmt->close();
         self::connect()->close();
     }
-    function getAll($sql){
+    function getAll(){
         $stmt = self::connect()->prepare("SELECT * FROM `demoentity`");
 
         $stmt->execute();
@@ -179,15 +199,15 @@ class MySQLDBHelper
         echo json_encode($result);
     }
 
-    function selectData($conn, $table, $fields, $whereClause = "", $params = array()) {
+    function selectData($table, $fields, $whereClause = "", $params = array()) {
         $sql = "SELECT " . implode(", ", $fields) . " FROM " . $table;
         if (!empty($whereClause)) {
             $sql .= " WHERE " . $whereClause;
         }
         
-        $stmt = $conn->prepare($sql);
+        $stmt = self::connect()->prepare($sql);
         if (!$stmt) {
-            die("Failed to prepare statement: " . $conn->error);
+            die("Failed to prepare statement: " . self::connect()->error);
         }
         
         if (!empty($params)) {

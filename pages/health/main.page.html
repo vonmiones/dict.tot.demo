@@ -526,6 +526,25 @@ $(document).ready(function() {
     $(".modal-body").load("pages/health/entity.information.form.html", function (response, status, request) {
       $("#modal-container").modal("show");
     });
+    $("#btnSave").click(function (e) { 
+      let message;
+        if (confirm("Do you want to proceed saving your data?") == true) {
+          message = "You pressed OK!";
+          let frmData = $("form").serializeArray();
+          $.ajax({
+            url: "api.php",
+            data: {
+              "method":"post",
+              "data":frmData
+            },
+            success: function (response) {              
+              console.log(response);
+            }
+          });
+        } else {
+          message = "You canceled!";
+        }
+    });
   });
 } );
 </script>

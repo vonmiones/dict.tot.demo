@@ -2,18 +2,18 @@
     <div class="form-header">
     </div>
     <div class="form-container">
-        <form class="needs-validation">
+        <form id="healthInformationForm" class="needs-validation" novalidate>
             <div class="form-wrapper">
                 <div class="form-floating">
-                    <input name="" required type="text" name="fname" class="form-control" id="txbFirstName" placeholder="First Name">
+                    <input name="fname" required type="text" class="form-control" id="txbFirstName" placeholder="First Name">
                     <label for="txbFirstName">First Name</label>
                 </div>
                 <div class="form-floating">
-                    <input name="" required type="text" name="mname" class="form-control" id="txbMiddleName" placeholder="Middle Name">
+                    <input name="mname" required type="text" class="form-control" id="txbMiddleName" placeholder="Middle Name">
                     <label for="txbMiddleName">Middle Name</label>
                 </div>
                 <div class="form-floating">
-                    <input name="" required type="text" name="lname" class="form-control" id="txbLastName" placeholder="Last Name">
+                    <input name="lname" required type="text" class="form-control" id="txbLastName" placeholder="Last Name">
                     <label for="txbLastName">Last Name</label>
                 </div>
                 <div class="form-floating">
@@ -111,11 +111,17 @@
             <div>Disease Information</div>
             <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
-                    <div class="form-check">
-                        <input name="isvaccinated" required class="form-check-input required" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Is the person vaccinated
-                        </label>
+                    <div class="form-check" >
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="isvaccinated"  value="0" id="isvaccinated1" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="isvaccinated1">Not Vaccinated</label>
+                            
+                            <input type="radio" class="btn-check" name="isvaccinated"  value="1" id="isvaccinated2" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="isvaccinated2">Partially Vaccinated</label>
+                            
+                            <input type="radio" class="btn-check" name="isvaccinated"  value="2" id="isvaccinated3" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="isvaccinated3">Fully Vaccinated</label>
+                        </div>
                     </div>
                     <div class="form-floating" style="flex-grow: 1;">
                         <input name="vaccinedetails" required type="text" class="form-control" id="txbAddress" placeholder="Address">
@@ -150,13 +156,18 @@
             <div>Recommended Action</div>
             <div class="form-wrapper">
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <input name="recommendation" required type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <input name="recommendation" required type="radio" class="btn-check" id="btnradio1" autocomplete="off" value="1" checked>
                     <label class="btn btn-outline-primary" for="btnradio1">Out Patient Cosultation</label>
                     
-                    <input name="recommendation" required type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <input name="recommendation" required type="radio" class="btn-check" id="btnradio2" autocomplete="off" value="2">
                     <label class="btn btn-outline-primary" for="btnradio2">Recommend for Hospital Admission</label>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+    $("#chkVaccinated").change(function() {
+        $(this).val($(this).prop('checked'));
+    });
+</script>
