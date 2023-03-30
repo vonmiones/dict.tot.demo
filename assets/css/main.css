@@ -210,4 +210,11 @@ a {
 
 #myTable tbody tr {
   font-size: 10pt;
+}
+
+.modal-container {
+  z-index: 1;
+}
+.modal-container .modal-dialog {
+  margin-top: 3rem !important;
 }/*# sourceMappingURL=main.css.map */

@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="card-holder">
-    <div class="activity-btn button btn-primary">Add Data</div>
+    <div class="activity-btn button btn-primary" id="addnewdata">Add Data</div>
   </div>
   <div class="card-holder">
     <table id="myTable" class="stripe compact">
@@ -515,5 +515,9 @@ $(document).ready(function() {
           'copy', 'excel', 'pdf'
       ]
   } );
+  $("#addnewdata").click(function (e) { 
+    e.preventDefault();
+    $("#modal-container").modal("show");
+  });
 } );
 </script>
