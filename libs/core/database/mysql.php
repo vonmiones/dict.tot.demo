@@ -19,53 +19,127 @@ class MySQLDBHelper
         return new mysqli($servername, $username, $password, $dbname, $port);
     
         // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        if (self::connect()->connect_error) {
+            die("Connection failed: " . self::connect()->connect_error);
         }
     }
 
-    function create(){
-        // prepare the INSERT statement with placeholders for the values
+    function create($data){
+        // define the input values
+        $fname = $data["fname"];
+        $mname = $data["mname"];
+        $lname = $data["lname"];
+        $suffix = $data["suffix"];
+        $sex = $data["sex"];
+        $civilstatus = $data["civilstatus"];
+        $birthdate = $data["birthdate"];
+        $height = $data["height"];
+        $weight = $data["weight"];
+        $bloodtype = $data["bloodtype"];
+        $barangay = $data["barangay"];
+        $citymun = $data["citymun"];
+        $province = $data["province"];
+        $email = $data["email"];
+        $contactno = $data["contactno"];
+        $contactno2 = $data["contactno2"];
+        $isvaccinated = $data["isvaccinated"];
+        $vaccinedetails = $data["vaccinedetails"];
+        $disease = $data["disease"];
+        $symptoms = $data["symptoms"];
+        $medicationdetails = $data["medicationdetails"];
+        $recommendation = $data["recommendation"];
+        $dtcreated = date("Y-m-d H:i:s");
+        $dtupdate = date("Y-m-d H:i:s");
+        $remarks = $data["remarks"];
+        $datastatus = 1;
+        
+        // prepare the INSERT statement with placeholders for the input values
         $stmt = self::connect()->prepare("
-            INSERT INTO `mytable` 
-            (
-                `objid`, `office`, `lastname`, `firstname`, `middlename`, 
-                `suffix`, `civilstatus`, `nationality`, `ethnicgroup`, 
-                `withchildren`, `ispwd`, `idmulticitizenship`, `isipmember`, 
-                `birthdate`, `addresslotblock`, `addresssubdivision`, 
-                `addresspurok`, `addressbarangay`, `addresscitymun`, 
-                `addressprovince`, `addressdistrict`, `addressregion`, 
-                `addresszipcode`, `bloodtype`, `height`, `weight`, `otherphysical`) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            INSERT INTO `personnel` 
+            (`fname`, `mname`, `lname`, `suffix`, `sex`, `civilstatus`, 
+            `birthdate`, `height`, `weight`, `bloodtype`, `barangay`, 
+            `citymun`, `province`, `email`, `contactno`, `contactno2`, 
+            `isvaccinated`, `vaccinedetails`, `disease`, `symptoms`, 
+            `medicationdetails`, `recommendation`, `dtcreated`, `dtupdate`, 
+            `remarks`, `datastatus`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-        // bind the values to the placeholders in the prepared statement
-        $stmt->bind_param("ssssssssiiiiissssssssssss", $objid, $office, $lastname, $firstname, $middlename, $suffix, $civilstatus, $nationality, $ethnicgroup, $withchildren, $ispwd, $idmulticitizenship, $isipmember, $birthdate, $addresslotblock, $addresssubdivision, $addresspurok, $addressbarangay, $addresscitymun, $addressprovince, $addressdistrict, $addressregion, $addresszipcode, $bloodtype, $height, $weight, $otherphysical);
+        // bind the input values to the placeholders in the prepared statement
+        $stmt->bind_param("ssssssssssssssssssssssssi", 
+        $fname, $mname, $lname, $suffix, $sex, $civilstatus, 
+        $birthdate, $height, $weight, $bloodtype, 
+        $barangay, $citymun, $province, $email, $contactno, 
+        $contactno2, $isvaccinated, $vaccinedetails, $disease, 
+        $symptoms, $medicationdetails, $recommendation, $dtcreated, 
+        $dtupdate, $remarks, $datastatus);
 
         // execute the prepared statement
         $stmt->execute();
 
         // check the number of affected rows
         if ($stmt->affected_rows > 0) {
-            echo "Record created successfully.";
+            echo "Record inserted successfully.";
         } else {
-            echo "Record creation failed.";
+            echo "Record was not inserted.";
         }
+
+        // close the statement and the database connection
+        $stmt->close();
+        self::connect()->close();
     }
     function getAll($sql){
-        $query = $sql;
-        $result = mysqli_query(self::connect(), $query);
+        // prepare the SELECT statement
+        $stmt = self::connect()->prepare("SELECT * FROM `personnel`");
 
-        $data = array();
-        while($row = mysqli_fetch_assoc($result)) {
-            $data[] = array(
-                "name" => $row["name"],
-                "email" => $row["email"],
-                "phone" => $row["phone"],
-                "address" => $row["address"]
+        // execute the prepared statement
+        $stmt->execute();
+
+        // bind the result set columns to variables
+        $stmt->bind_result($id, $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtcreated, $dtupdate, $remarks, $datastatus);
+
+        // create an array to store the results
+        $results = array();
+
+        // fetch each row and store it in the results array
+        while ($stmt->fetch()) {
+            $row = array(
+                "id" => $id,
+                "fname" => $fname,
+                "mname" => $mname,
+                "lname" => $lname,
+                "suffix" => $suffix,
+                "sex" => $sex,
+                "civilstatus" => $civilstatus,
+                "birthdate" => $birthdate,
+                "height" => $height,
+                "weight" => $weight,
+                "bloodtype" => $bloodtype,
+                "barangay" => $barangay,
+                "citymun" => $citymun,
+                "province" => $province,
+                "email" => $email,
+                "contactno" => $contactno,
+                "contactno2" => $contactno2,
+                "isvaccinated" => $isvaccinated,
+                "vaccinedetails" => $vaccinedetails,
+                "disease" => $disease,
+                "symptoms" => $symptoms,
+                "medicationdetails" => $medicationdetails,
+                "recommendation" => $recommendation,
+                "dtcreated" => $dtcreated,
+                "dtupdate" => $dtupdate,
+                "remarks" => $remarks,
+                "datastatus" => $datastatus
             );
+            $results[] = $row;
         }
 
-        echo json_encode($data);
+        // close the statement and the database connection
+        $stmt->close();
+        self::connect()->close();
+
+        // output the results array as JSON
+        echo json_encode($results);
 
     }
 
@@ -114,39 +188,38 @@ class MySQLDBHelper
 
     function update($table,$data)
     {
-        // define the values to update
-        $id = 1;
-        // $data = array(
-        //     "name" => "John Doe",
-        //     "email" => "john.doe@example.com",
-        //     "phone" => "555-1234",
-        //     "address" => "123 Main St, New York"
-        // );
+        // define the input values
+        $id = $data["id"]; 
+        $fname = $data["fname"];
+        $mname = $data["mname"];
+        $lname = $data["lname"];
+        $suffix = $data["suffix"];
+        $sex = $data["sex"];
+        $civilstatus = $data["civilstatus"];
+        $birthdate = $data["birthdate"];
+        $height = $data["height"];
+        $weight = $data["weight"];
+        $bloodtype = $data["bloodtype"];
+        $barangay = $data["barangay"];
+        $citymun = $data["citymun"];
+        $province = $data["province"];
+        $email = $data["email"];
+        $contactno = $data["contactno"];
+        $contactno2 = $data["contactno2"];
+        $isvaccinated = $data["isvaccinated"];
+        $vaccinedetails = $data["vaccinedetails"];
+        $disease = $data["disease"];
+        $symptoms = $data["symptoms"];
+        $medicationdetails = $data["medicationdetails"];
+        $recommendation = $data["recommendation"];
+        $dtupdate = date("Y-m-d H:i:s");
+        $remarks = $data["remarks"];
 
-        // initialize the SET clause string and the array of bind parameters
-        $setClause = "";
-        $bindParams = array();
+        // prepare the UPDATE statement with placeholders for the input values
+        $stmt = self::connect()->prepare("UPDATE `personnel` SET `fname`=?, `mname`=?, `lname`=?, `suffix`=?, `sex`=?, `civilstatus`=?, `birthdate`=?, `height`=?, `weight`=?, `bloodtype`=?, `barangay`=?, `citymun`=?, `province`=?, `email`=?, `contactno`=?, `contactno2`=?, `isvaccinated`=?, `vaccinedetails`=?, `disease`=?, `symptoms`=?, `medicationdetails`=?, `recommendation`=?, `dtupdate`=?, `remarks`=? WHERE `id`=?");
 
-        // loop through the update values and add each column-value pair to the SET clause
-        foreach ($data as $column => $value) {
-            $setClause .= "`$column`=?, ";
-            $bindParams[] = $value;
-        }
-
-        // remove the trailing comma and space from the SET clause
-        $setClause = rtrim($setClause, ", ");
-
-        // prepare the UPDATE statement
-        $stmt = self::connect()->prepare("UPDATE $table SET $setClause WHERE `id`=?");
-
-        // add the ID to the bind parameters array
-        $bindParams[] = $id;
-
-        // generate the types string for the bind_param() method
-        $typesString = str_repeat("s", count($bindParams) - 1) . "i";
-
-        // bind the values to the placeholders in the prepared statement
-        $stmt->bind_param($typesString, ...$bindParams);
+        // bind the input values to the placeholders in the prepared statement
+        $stmt->bind_param("sssssssssssssssssssssssi", $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtupdate, $remarks, $id);
 
         // execute the prepared statement
         $stmt->execute();
@@ -155,20 +228,39 @@ class MySQLDBHelper
         if ($stmt->affected_rows > 0) {
             echo "Record updated successfully.";
         } else {
-            echo "No records were updated.";
+            echo "Record was not updated.";
         }
+
+        // close the statement and the database connection
+        $stmt->close();
+        self::connect()->close();
 
 
     }
 
-    function delete(){
-        $id = $_GET['id'];
-        $query = "DELETE FROM `users` WHERE `id`='$id'";
-        $result = mysqli_query(self::connect(), $query);
+    function delete($data){
+        // define the input values
+        $id = $data["id"]; // assuming this is the ID of the row to be deleted
 
-        if($result){
-            header("location:index.php");
+        // prepare the DELETE statement with a placeholder for the input value
+        $stmt = self::connect()->prepare("DELETE FROM `personnel` WHERE `id`=?");
+
+        // bind the input value to the placeholder in the prepared statement
+        $stmt->bind_param("i", $id);
+
+        // execute the prepared statement
+        $stmt->execute();
+
+        // check the number of affected rows
+        if ($stmt->affected_rows > 0) {
+            echo "Record deleted successfully.";
+        } else {
+            echo "Record was not deleted.";
         }
+
+        // close the statement and the database connection
+        $stmt->close();
+        self::connect() ->close();
 
     }
 

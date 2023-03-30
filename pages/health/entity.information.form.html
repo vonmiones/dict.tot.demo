@@ -2,22 +2,22 @@
     <div class="form-header">
     </div>
     <div class="form-container">
-        <form>
+        <form class="needs-validation">
             <div class="form-wrapper">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="txbFirstName" placeholder="First Name">
+                    <input required type="text" class="form-control" id="txbFirstName" placeholder="First Name">
                     <label for="txbFirstName">First Name</label>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="txbMiddleName" placeholder="Middle Name">
+                    <input required type="text" class="form-control" id="txbMiddleName" placeholder="Middle Name">
                     <label for="txbMiddleName">Middle Name</label>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="txbLastName" placeholder="Last Name">
+                    <input required type="text" class="form-control" id="txbLastName" placeholder="Last Name">
                     <label for="txbLastName">Last Name</label>
                 </div>
                 <div class="form-floating">
-                    <select class="form-select" id="selectSex" aria-label="Sex Options">
+                    <select required class="form-select" id="selectSex" aria-label="Sex Options">
                         <option></option>
                         <option value="1">Senior</option>
                         <option value="2">Junior</option>
@@ -35,14 +35,14 @@
             </div>
             <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
-                    <select class="form-select" id="selectSex" aria-label="Sex Options">
+                    <select required class="form-select" id="selectSex" aria-label="Sex Options">
                         <option value="m">Male</option>
                         <option value="f">Female</option>
                     </select>
                     <label for="floatingSelect">Sex</label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <select class="form-select" id="selectSex" aria-label="Civil Status Options">
+                    <select required class="form-select" id="selectSex" aria-label="Civil Status Options">
                         <option value="1">Single</option>
                         <option value="2">Married</option>
                         <option value="3">Widow</option>
@@ -52,21 +52,21 @@
                     <label for="floatingSelect">Civil Status</label>
                 </div>
                 <div class="form-floating">
-                    <input type="date" class="form-control" id="txbBirthday" placeholder="Birthday">
+                    <input required type="date" class="form-control" id="txbBirthday" placeholder="Birthday">
                     <label for="txbBirthday">Birthday</label>
                 </div>               
             </div>
             <div class="form-wrapper">
                 <div class="form-floating" >
-                    <input type="number" class="form-control" id="txbHeight" placeholder="Height">
+                    <input required type="number" class="form-control" id="txbHeight" placeholder="Height">
                     <label for="txbHeight">Height<sup>(<i> cm </i>)</sup> </label>
                 </div>
                 <div class="form-floating" >
-                    <input type="number" class="form-control" id="txbWeight" placeholder="Weight">
+                    <input required type="number" class="form-control" id="txbWeight" placeholder="Weight">
                     <label for="txbWeight">Weight<sup>(<i> kilo </i>)</sup></label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <select class="form-select" id="selectSex" aria-label="Blood Type Options">
+                    <select required class="form-select" id="selectSex" aria-label="Blood Type Options">
                         <option value="op">O+</option>
                         <option value="om">O-</option>
                         <option value="ap">A+</option>
@@ -82,29 +82,29 @@
             <div>Contact Information</div>
             <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Barangay</label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Municipality</label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Province</label>
                 </div>
             </div>
             <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Email</label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Contact Number</label>
                 </div>
                 <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                    <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                     <label for="txbAddress">Alternative Contact Number</label>
                 </div>
             </div>
@@ -112,20 +112,20 @@
             <div class="form-wrapper">
                 <div class="form-floating" style="flex-grow: 1;">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <input required class="form-check-input required" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
                             Is the person vaccinated
                         </label>
                     </div>
                     <div class="form-floating" style="flex-grow: 1;">
-                        <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                        <input required type="text" class="form-control" id="txbAddress" placeholder="Address">
                         <label for="txbAddress">Vaccine Details</label>
                     </div> 
                 </div>
             </div>
             <div class="form-wrapper">
                 <div class="form-floating">
-                    <select class="form-select" id="selectSex" aria-label="Disease Information">
+                    <select required class="form-select" id="selectSex" aria-label="Disease Information">
                         <option value="covid19">COVID-19</option>
                         <option value="denguefever">Dengue Fever</option>
                         <option value="cap">Community-acquired pneumonia</option>
@@ -150,10 +150,10 @@
             <div>Recommended Action</div>
             <div class="form-wrapper">
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <input required type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                     <label class="btn btn-outline-primary" for="btnradio1">Out Patient Cosultation</label>
                     
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <input required type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                     <label class="btn btn-outline-primary" for="btnradio2">Recommend for Admission</label>
                     
                 </div>
