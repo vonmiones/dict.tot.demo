@@ -144,47 +144,102 @@ class MySQLDBHelper
     }
 
     function getSingle($sql,$data){
-        // define the search criteria as an associative array
-        // $data = array(
-        //     "fname" => "John",
-        //     "lname" => "Doe",
-        //     "city" => "New York"
-        // );
+        // define the variable for the ID
+        $id = $data['id'];
 
-        // initialize the WHERE clause string and the array of bind parameters
-        $where = "";
-        $bindParams = array();
+        // define the variable for the column to search
+        $search_column = "id";
 
-        // loop through the search criteria and add each condition to the WHERE clause
-        foreach ($data as $column => $value) {
-            if ($value != "") {
-                $where .= " AND `$column`=?";
-                $bindParams[] = $value;
-            }
-        }
+        // prepare the SELECT statement
+        $stmt = self::connect()->prepare("SELECT * FROM `personnel` WHERE `$search_column` = ?");
 
-        // remove the first "AND" from the WHERE clause
-        $where = ltrim($where, " AND");
+        // bind the ID variable to the prepared statement
+        $stmt->bind_param("i", $id);
 
-        // prepare and execute the SELECT statement with the WHERE clause
-        $stmt = self::connect()->prepare("SELECT * FROM `users` WHERE $where");
-        $stmt->bind_param(str_repeat("s", count($bindParams)), ...$bindParams);
+        // execute the prepared statement
         $stmt->execute();
-        $result = $stmt->get_result();
 
-        $data = array();
-        while($row = $result->fetch_assoc()) {
-            $data[] = array(
-                "name" => $row["name"],
-                "email" => $row["email"],
-                "phone" => $row["phone"],
-                "address" => $row["address"]
-            );
-        }
+        // bind the result set columns to variables
+        $stmt->bind_result($id, $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtcreated, $dtupdate, $remarks, $datastatus);
 
-        echo json_encode($data);
+        // fetch the first (and only) row
+        $stmt->fetch();
 
+        // create an array to store the result
+        $result = array(
+            "id" => $id,
+            "fname" => $fname,
+            "mname" => $mname,
+            "lname" => $lname,
+            "suffix" => $suffix,
+            "sex" => $sex,
+            "civilstatus" => $civilstatus,
+            "birthdate" => $birthdate,
+            "height" => $height,
+            "weight" => $weight,
+            "bloodtype" => $bloodtype,
+            "barangay" => $barangay,
+            "citymun" => $citymun,
+            "province" => $province,
+            "email" => $email,
+            "contactno" => $contactno,
+            "contactno2" => $contactno2,
+            "isvaccinated" => $isvaccinated,
+            "vaccinedetails" => $vaccinedetails,
+            "disease" => $disease,
+            "symptoms" => $symptoms,
+            "medicationdetails" => $medicationdetails,
+            "recommendation" => $recommendation,
+            "dtcreated" => $dtcreated,
+            "dtupdate" => $dtupdate,
+            "remarks" => $remarks,
+            "datastatus" => $datastatus
+        );
+
+        // close the statement and the database connection
+        $stmt->close();
+        self::connect()->close();
+
+        // output the result array as JSON
+        echo json_encode($result);
     }
+
+    function selectData($conn, $table, $fields, $whereClause = "", $params = array()) {
+        // construct the SQL query
+        $sql = "SELECT " . implode(", ", $fields) . " FROM " . $table;
+        if (!empty($whereClause)) {
+            $sql .= " WHERE " . $whereClause;
+        }
+        
+        // prepare the SQL statement
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Failed to prepare statement: " . $conn->error);
+        }
+        
+        // bind the query parameters
+        if (!empty($params)) {
+            $types = str_repeat("s", count($params));
+            $stmt->bind_param($types, ...$params);
+        }
+        
+        // execute the query
+        if (!$stmt->execute()) {
+            die("Failed to execute statement: " . $stmt->error);
+        }
+        
+        // fetch the result set and return as an array
+        $result = $stmt->get_result();
+        $rows = array();
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        
+        // clean up and return the result set
+        $stmt->close();
+        return $rows;
+    }
+    
 
     function update($table,$data)
     {
