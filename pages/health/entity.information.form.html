@@ -114,14 +114,14 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
-                            Person is Vaccinated
+                            Is the person vaccinated
                         </label>
                     </div>
+                    <div class="form-floating" style="flex-grow: 1;">
+                        <input type="text" class="form-control" id="txbAddress" placeholder="Address">
+                        <label for="txbAddress">Vaccine Details</label>
+                    </div> 
                 </div>
-                <div class="form-floating" style="flex-grow: 1;">
-                    <input type="text" class="form-control" id="txbAddress" placeholder="Address">
-                    <label for="txbAddress">Vaccine Details</label>
-                </div> 
             </div>
             <div class="form-wrapper">
                 <div class="form-floating">
@@ -144,7 +144,18 @@
             <div class="form-wrapper" style="height:50px;">
                 <div class="form-floating" style="flex-grow: 1;">
                     <textarea class="form-control" placeholder="Medication" id="floatingTextarea"></textarea>
-                    <label for="txbAddress">Medication Details</label>
+                    <label for="txbAddress">Medication Details<sup>(<i> If the patient is taking medications prior to consultation </i>)</sup></label>
+                </div>
+            </div>
+            <div>Recommended Action</div>
+            <div class="form-wrapper">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Out Patient Cosultation</label>
+                    
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">Recommend for Admission</label>
+                    
                 </div>
             </div>
         </form>
