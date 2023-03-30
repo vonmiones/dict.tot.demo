@@ -103,53 +103,56 @@ class MySQLDBHelper
         $stmt->close();
         self::connect()->close();
     }
-    function getAll(){
-        $stmt = self::connect()->prepare("SELECT * FROM `demoentity`");
-
+    function select($table, $fields = array(), $where = array()) {
+        $query = "SELECT ";
+        if (empty($fields)) {
+            $query .= "* ";
+        } else {
+            $query .= implode(", ", $fields);
+        }
+        $query .= " FROM " . $table;
+        if (!empty($where)) {
+            $query .= " WHERE ";
+            $conditions = array();
+            foreach ($where as $key => $value) {
+                $conditions[] = $key . " = ?";
+            }
+            $query .= implode(" AND ", $conditions);
+        }
+        $stmt = self::connect()->prepare($query);
+        if (!empty($where)) {
+            $values = array_values($where);
+            $types = str_repeat("s", count($values));
+            $stmt->bind_param($types, ...$values);
+        }
         $stmt->execute();
-
-        $stmt->bind_result($id, $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtcreated, $dtupdate, $remarks, $datastatus);
-
-        $results = array();
-
-        while ($stmt->fetch()) {
-            $row = array(
-                "id" => $id,
-                "fname" => $fname,
-                "mname" => $mname,
-                "lname" => $lname,
-                "suffix" => $suffix,
-                "sex" => $sex,
-                "civilstatus" => $civilstatus,
-                "birthdate" => $birthdate,
-                "height" => $height,
-                "weight" => $weight,
-                "bloodtype" => $bloodtype,
-                "barangay" => $barangay,
-                "citymun" => $citymun,
-                "province" => $province,
-                "email" => $email,
-                "contactno" => $contactno,
-                "contactno2" => $contactno2,
-                "isvaccinated" => $isvaccinated,
-                "vaccinedetails" => $vaccinedetails,
-                "disease" => $disease,
-                "symptoms" => $symptoms,
-                "medicationdetails" => $medicationdetails,
-                "recommendation" => $recommendation,
-                "dtcreated" => $dtcreated,
-                "dtupdate" => $dtupdate,
-                "remarks" => $remarks,
-                "datastatus" => $datastatus
-            );
-            $results[] = $row;
+        $result = $stmt->get_result();
+        $rows = array();
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    
+    function getAll(){
+        $conn = self::connect();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         }
 
-        $stmt->close();
-        self::connect()->close();
+        $sql = "SELECT *,CONCAT(fname,' ', SUBSTRING(mname,0,1), '. ', lname  ) as `name` FROM demoentity";
+        $result = $conn->query($sql);
 
-        echo json_encode($results);
-
+        $rows = array();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $rows[] = $row;;
+            }
+        } else {
+            echo "0 results";
+        }
+        $conn->close();
+        return $rows;
     }
 
     function getSingle($sql,$data){

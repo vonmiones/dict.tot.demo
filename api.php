@@ -8,7 +8,8 @@ $action = "";
 if(isset($_POST)){
     $method = isset($_POST["method"])? $_POST["method"] :"";
     $action = isset($_POST["action"])? $_POST["action"] :"";
-}else{
+}
+if(isset($_GET)){
     $method = isset($_GET["method"])? $_GET["method"] :"";
     $action = isset($_GET["action"])? $_GET["action"] :"";
 }
@@ -37,15 +38,10 @@ switch ($method) {
                 case 'update':
                     break;
                 case 'all':
-                        $request = "";
-                        $data = array();
-                        foreach ($_POST['data']  as $key => $value) {
-                            $data[$value['name']] = $value['value'];
-                        }
                         $healthinfo = new HealthInformationClass();
-                        $result = $healthinfo->getAll();
+                        $result = $healthinfo->getAllEntities();
                         header("Content-type: application/json; charset=utf-8");
-                        echo json_encode($result);
+                        echo json_encode(array( "data"=>$result));
                     break;
                 
             }

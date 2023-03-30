@@ -27,17 +27,8 @@ class HealthInformationClass
         return $result;
     }
 
-    function getEntities(){
-        $fields = array("disease", "COUNT(*) AS num_cases");
-
-        // define the WHERE clause and parameters (optional)
-        $whereClause = "";
-        $params = array();
-
-        // define the GROUP BY and ORDER BY clauses
-        $groupBy = "disease";
-        $orderBy = "num_cases DESC";
-        $result = self::db()->selectData("demoentity", $fields, $whereClause = "", $params = array());
+    function getAllEntities(){
+        $result = self::db()->getAll();
         return $result;
     }
 }
