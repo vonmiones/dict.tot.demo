@@ -50,87 +50,24 @@ class MySQLDBHelper
         mysqli_stmt_close($stmt);
         return array("result"=>"success","message"=>$affected_rows);
     }
-    function create1($data){
-
+    function selectData($fields, $limit) {
         $conn = self::connect();
-        $fname = mysqli_real_escape_string($conn, $data["fname"]);
-        $mname = mysqli_real_escape_string($conn, $data["mname"]);
-        $lname = mysqli_real_escape_string($conn, $data["lname"]);
-        $suffix = mysqli_real_escape_string($conn, $data["suffix"]);
-        $sex = mysqli_real_escape_string($conn, $data["sex"]);
-        $civilstatus = mysqli_real_escape_string($conn, $data["civilstatus"]);
-        $birthdate = mysqli_real_escape_string($conn, $data["birthdate"]);
-        $height = mysqli_real_escape_string($conn, $data["height"]);
-        $weight = mysqli_real_escape_string($conn, $data["weight"]);
-        $bloodtype = mysqli_real_escape_string($conn, $data["bloodtype"]);
-        $barangay = mysqli_real_escape_string($conn, $data["barangay"]);
-        $citymun = mysqli_real_escape_string($conn, $data["citymun"]);
-        $province = mysqli_real_escape_string($conn, $data["province"]);
-        $email = mysqli_real_escape_string($conn, $data["email"]);
-        $contactno = mysqli_real_escape_string($conn, $data["contactno"]);
-        $contactno2 = mysqli_real_escape_string($conn, $data["contactno2"]);
-        $isvaccinated = mysqli_real_escape_string($conn, $data["isvaccinated"]);
-        $vaccinedetails = mysqli_real_escape_string($conn, $data["vaccinedetails"]);
-        $disease = mysqli_real_escape_string($conn, $data["disease"]);
-        $symptoms = mysqli_real_escape_string($conn, $data["symptoms"]);
-        $medicationdetails = mysqli_real_escape_string($conn, $data["medicationdetails"]);
-        $recommendation = mysqli_real_escape_string($conn, $data["recommendation"]);
-        
-        $stmt = self::connect()->prepare("
-            INSERT INTO `demoentity` 
-            (`fname`, `mname`, `lname`, `suffix`, `sex`, `civilstatus`, 
-            `birthdate`, `height`, `weight`, `bloodtype`, `barangay`, 
-            `citymun`, `province`, `email`, `contactno`, `contactno2`, 
-            `isvaccinated`, `vaccinedetails`, `disease`, `symptoms`, 
-            `medicationdetails`, `recommendation`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-
-        $stmt->bind_param("ssssssssssssssssssssss", 
-        $fname, $mname, $lname, $suffix, $sex, $civilstatus, 
-        $birthdate, $height, $weight, $bloodtype, 
-        $barangay, $citymun, $province, $email, $contactno, 
-        $contactno2, $isvaccinated, $vaccinedetails, $disease, 
-        $symptoms, $medicationdetails, $recommendation);
-
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            echo "Record inserted successfully.";
-        } else {
-            echo "Record was not inserted.";
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         }
 
-        $stmt->close();
-        self::connect()->close();
-    }
-    function select($table, $fields = array(), $where = array()) {
-        $query = "SELECT ";
-        if (empty($fields)) {
-            $query .= "* ";
-        } else {
-            $query .= implode(", ", $fields);
-        }
-        $query .= " FROM " . $table;
-        if (!empty($where)) {
-            $query .= " WHERE ";
-            $conditions = array();
-            foreach ($where as $key => $value) {
-                $conditions[] = $key . " = ?";
-            }
-            $query .= implode(" AND ", $conditions);
-        }
-        $stmt = self::connect()->prepare($query);
-        if (!empty($where)) {
-            $values = array_values($where);
-            $types = str_repeat("s", count($values));
-            $stmt->bind_param($types, ...$values);
-        }
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $sql = "SELECT $fields FROM demoentity GROUP BY disease ORDER BY num_cases DESC LIMIT $limit";
+        $result = $conn->query($sql);
+
         $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $rows[] = $row;;
+            }
+        } else {
+            echo "0 results";
         }
+        $conn->close();
         return $rows;
     }
     
@@ -206,36 +143,6 @@ class MySQLDBHelper
         echo json_encode($result);
     }
 
-    function selectData($table, $fields, $whereClause = "", $params = array()) {
-        $sql = "SELECT " . implode(", ", $fields) . " FROM " . $table;
-        if (!empty($whereClause)) {
-            $sql .= " WHERE " . $whereClause;
-        }
-        
-        $stmt = self::connect()->prepare($sql);
-        if (!$stmt) {
-            die("Failed to prepare statement: " . self::connect()->error);
-        }
-        
-        if (!empty($params)) {
-            $types = str_repeat("s", count($params));
-            $stmt->bind_param($types, ...$params);
-        }
-        
-        if (!$stmt->execute()) {
-            die("Failed to execute statement: " . $stmt->error);
-        }
-        
-        $result = $stmt->get_result();
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        
-        $stmt->close();
-        return $rows;
-    }
-    
 
     function update($table,$data)
     {
