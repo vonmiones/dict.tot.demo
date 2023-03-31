@@ -46,11 +46,11 @@
               <th>Birth Date</th>
               <th>Case</th>
               <th>Temp</th>
-              <th>COVID-19 Diagnosed</th>
-              <th>COVID-19 Encounter</th>
+              <th>Diagnosis</th>
+              <th>Encounter</th>
               <th>Is Vaccinated</th>
               <th>City / Municipality</th>
-              <th>Actions</th>
+              <th>Country</th>
           </tr>
       </thead>
       <tbody>
@@ -62,12 +62,12 @@
               <th>Birth Date</th>
               <th>Case</th>
               <th>Temp</th>
-              <th>COVID-19 Diagnosed</th>
-              <th>COVID-19 Encounter</th>
+              <th>Diagnosis</th>
+              <th>Encounter</th>
               <th>Is Vaccinated</th>
               <th>Nationality</th>
               <th>City / Municipality</th>
-              <th>Actions</th>
+              <th>Country</th>
           </tr>
       </tfoot>
   </table>
@@ -112,7 +112,7 @@ $(document).ready(function() {
             { data: 'isvaccinated' },
             { data: 'citymun' },
             { data: 'country' },
-            { data: 'id' },
+            { data: 'id' }
         ],
       buttons: [
           'copy', 'excel', 'pdf'
@@ -120,7 +120,49 @@ $(document).ready(function() {
       'createdRow': function( row, data, dataIndex ) {
           $(row).attr('data-id', data.id);
       },
+
       'columnDefs': [
+        {
+            'targets': 5,
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                let status = '<span class="badge rounded-pill bg-danger">COVID-19 Positive</span>';
+                if(rowData.coviddiagnosed == 0){
+                  status = '<span class="badge rounded-pill bg-success">Negative</span>';
+                }
+                $(td).css("text-align","center");
+                $(td).html(status);
+              }
+        },
+        {
+            'targets': 6,
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                let status = '<span class="badge rounded-pill bg-warning text-dark">Yes</span>';
+                if(rowData.covidencounter == 0){
+                  status = '<span class="badge rounded-pill bg-success">No</span>';
+                }
+                $(td).css("text-align","center");
+                $(td).html(status);
+              }
+        },
+        {
+            'targets': 7,
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                let status = '<span class="badge rounded-pill bg-secondary">Unvaccinated</span>';
+                switch ( parseInt(rowData.isvaccinated)) {
+                  case 0:                    
+                  status = '<span class="badge rounded-pill bg-dark">Unvaccinated</span>';
+                    break;
+                  case 1:                    
+                  status = '<span class="badge rounded-pill bg-warning text-dark">Partial</span>';
+                    break;
+                  case 2:                    
+                  status = '<span class="badge rounded-pill bg-primary">Fully Vaccinated</span>';
+                    break;
+                }
+                $(td).css("text-align","center");
+                $(td).html(status);
+              }
+        },
         {
             'targets': 10,
             'createdCell':  function (td, cellData, rowData, row, col) {
