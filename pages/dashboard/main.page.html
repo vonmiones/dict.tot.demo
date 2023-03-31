@@ -1,31 +1,32 @@
+
 <div class="content-wrapper">
-    <div class="content-title">TOP 4<span class="title-sub-1"> Diseases</span></div>
+    <div class="content-title">TOP 5<span class="title-sub-1"> Diseases</span></div>
     <div class="card-holder">
-      <div class="disease-data child card">
+      <div class="disease-data child card" style="background-color: var(--pallete-set3-color1); color:var(--pallete-set3-color5);">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <p class="card-text"></p>
         </div>
       </div>
-      <div class="disease-data child card">
+      <div class="disease-data child card" style="background-color: var(--pallete-set3-color2); color:var(--pallete-set3-color5);">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <p class="card-text"></p>
         </div>
       </div>
-      <div class="disease-data child card">
+      <div class="disease-data child card" style="background-color: var(--pallete-set3-color3); color:var(--pallete-set3-color0);">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <p class="card-text"></p>
         </div>
       </div>
-      <div class="disease-data child card">
+      <div class="disease-data child card" style="background-color: var(--pallete-set3-color4); color:var(--pallete-set3-color0);">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <p class="card-text"></p>
         </div>
       </div>
-      <div class="disease-data child card">
+      <div class="disease-data child card" style="background-color: var(--pallete-set3-color4); color:var(--pallete-set3-color0);">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <p class="card-text"></p>
@@ -47,14 +48,47 @@
           <p class="card-text">DIAGNOSED WITH COVID-19</p>
         </div>
       </div>
-      <div class="mostinfected-data child card">
+      <div class="minor-data child card">
         <div class="card-body">
           <h5 class="card-title"></h5>
           <h6 class="card-title2"></h6>
-          <p class="card-text">MOST INFECTED COUNTRY</p>
+          <p class="card-text">TOTAL MINOR DIAGNOSED WITH COVID-19</p>
+        </div>
+      </div>
+      <div class="adult-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <h6 class="card-title2"></h6>
+          <p class="card-text">TOTAL ADULT DIAGNOSED WITH COVID-19</p>
+        </div>
+      </div>
+      <div class="senior-data child card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <h6 class="card-title2"></h6>
+          <p class="card-text">TOTAL SENIOR DIAGNOSED WITH COVID-19</p>
         </div>
       </div>
       </div>
+      <div class="card-holder">
+        <div class="mostinfected-data child card">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <h6 class="card-title2"></h6>
+              <p class="card-text">MOST INFECTED COUNTRY</p>
+            </div>
+        </div>
+        <div class="card-holder">
+              <canvas id="chartMinor" style="width:200px; height:250px;"></canvas>
+        </div>
+        <div class="card-holder">
+              <canvas id="chartAdult" style="width:200px; height:250px;"></canvas>
+        </div>
+        <div class="card-holder">
+              <canvas id="chartSenior" style="width:200px; height:250px;"></canvas>
+        </div>
+      </div>
+
     </div>
 
     
@@ -65,7 +99,7 @@
 
     function getTop3Cases() { 
       $.ajax({
-        url: "api.php?method=get&action=topdiseases&count=4",
+        url: "api.php?method=get&action=topdiseases&count=5",
         success: function (response) {
           $(response.data).each(function (i, d) { 
             let elPanel = $('.disease-data')[i];
@@ -77,6 +111,7 @@
      }
 
     function getCovidDataPerCountry() { 
+
       $.ajax({
         url: "api.php?method=get&action=covidpercountry&count=1",
         success: function (response) {
@@ -84,10 +119,45 @@
             let elPanel = $('.mostinfected-data')[i];
             $(elPanel).find('.card-title').html(d.num_cases);
             $(elPanel).find('.card-title2').html(d.country);
-            console.log(d);
+            //console.log(d);
           });
         }
       });
+
+      $.ajax({
+        url: "api.php?method=get&action=covidperforminors",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            let elPanel = $('.minor-data')[i];
+            $(elPanel).find('.card-title').html(response.total);
+            //console.log(d);
+          });
+        }
+      });
+
+      $.ajax({
+        url: "api.php?method=get&action=covidperforadults",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            let elPanel = $('.adult-data')[i];
+            $(elPanel).find('.card-title').html(response.total);
+            //console.log(d);
+          });
+        }
+      });
+
+      $.ajax({
+        url: "api.php?method=get&action=covidperforseniors",
+        success: function (response) {
+          $(response.data).each(function (i, d) { 
+            let elPanel = $('.senior-data')[i];
+            $(elPanel).find('.card-title').html(response.total);
+            //console.log(d);
+          });
+        }
+      });
+
+
      }
 
     function getCovidData() { 
@@ -95,7 +165,7 @@
         url: "api.php?method=get&action=coviddata",
         success: function (response) {
           $(response.data).each(function (i, d) { 
-            console.log(d);
+            //console.log(d);
             $(".encounter-data").find('.card-title').html(d.encounter);
             $(".diagnosed-data").find('.card-title').html(d.diagnosed);
           });
@@ -113,3 +183,69 @@
 
   } );
   </script>
+
+<script>
+makeCOVIDChart("Minor","api.php?method=get&action=covidperforminors","chartMinor");
+makeCOVIDChart("Adult","api.php?method=get&action=covidperforadults","chartAdult","rgba(248, 133, 1, 0.2)","rgba(248, 133, 1, 1)");
+makeCOVIDChart("Senior","api.php?method=get&action=covidperforseniors","chartSenior","rgba(1, 100, 248, 0.2)","rgba(1, 100, 248, 1)");
+function makeCOVIDChart(ageGroup,url,element,backgroundColor="rgba(255, 99, 132, 0.2)",borderColor="rgba(255, 99, 132, 1)") {
+    $.ajax({
+    url: url,
+    dataType: "json",
+    success: function(data) {
+      // Process data and create chart
+      var labels = [];
+      var values = [];
+      $.each(data.data, function(index, element) {
+        switch (ageGroup) {
+            case "Minor":
+                labels.push("Age: "+element.minor);
+                break;
+            case "Adult":
+                labels.push("Age: "+element.adult);
+                break;
+            case "Senior":
+                labels.push("Age: "+element.senior);                
+                break;
+        
+            default:
+                break;
+        }
+
+        values.push(element.cases);
+      });
+      var chartData = {
+        labels: labels,
+        datasets: [{
+          label: "COVID Cases in "+ageGroup,
+          data: values,
+          backgroundColor: backgroundColor,
+          borderColor: borderColor,
+          borderWidth: 1
+        }]
+      };
+      var chartOptions = {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      };
+      var ctx = document.getElementById(element).getContext("2d");
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+      });
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error("AJAX Error: " + textStatus, errorThrown);
+    }
+  });
+
+    
+}
+</script>
+   

@@ -29,7 +29,6 @@ switch ($method) {
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode($result);
                 break;
-            
         }
     break;
     case 'get':
@@ -112,12 +111,44 @@ switch ($method) {
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode(array( "data"=>$result));
                 break;
+
             case 'covidpercountry':
                     $healthinfo = new HealthInformationClass();
                     $count = isset($_GET["count"])?$_GET["count"]:3;
                     $result = $healthinfo->getTopCountriesWithCovid($count);
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode(array( "data"=>$result));
+                break;
+                
+            case 'covidperforminors':
+                    $healthinfo = new HealthInformationClass();
+                    $result = $healthinfo->getAllCovidDataForMinors();
+                    $counts = 0;
+                    foreach ($result as $key) {
+                        $counts += intval($key['cases']);
+                    }
+                    header("Content-type: application/json; charset=utf-8");
+                    echo json_encode(array( "data"=>$result, "total"=>$counts));
+                break;
+            case 'covidperforadults':
+                    $healthinfo = new HealthInformationClass();
+                    $result = $healthinfo->getAllCovidDataForAdults();
+                    $counts = 0;
+                    foreach ($result as $key) {
+                        $counts += intval($key['cases']);
+                    }
+                    header("Content-type: application/json; charset=utf-8");
+                    echo json_encode(array( "data"=>$result, "total"=>$counts));
+                break;
+            case 'covidperforseniors':
+                    $healthinfo = new HealthInformationClass();
+                    $result = $healthinfo->getAllCovidDataForSeniors();
+                    $counts = 0;
+                    foreach ($result as $key) {
+                        $counts += intval($key['cases']);
+                    }
+                    header("Content-type: application/json; charset=utf-8");
+                    echo json_encode(array( "data"=>$result, "total"=>$counts));
                 break;
                 
             case 'diseaseslist':

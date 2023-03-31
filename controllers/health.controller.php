@@ -33,6 +33,21 @@ class HealthInformationClass
         return $result;
     }
 
+    function getAllCovidDataForMinors(){
+        $result = self::db()->selectCustomData("SELECT COUNT(*) as 'cases',TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS minor FROM demoentity WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) < 18 AND coviddiagnosed = 1  GROUP BY minor");
+        return $result;
+    }
+
+    function getAllCovidDataForAdults(){
+        $result = self::db()->selectCustomData("SELECT COUNT(*) as 'cases',TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS adult FROM demoentity WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) > 18 && TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) < 60 AND coviddiagnosed = 1 GROUP BY adult");
+        return $result;
+    }
+
+    function getAllCovidDataForSeniors(){
+        $result = self::db()->selectCustomData("SELECT COUNT(*) as 'cases',TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS senior FROM demoentity WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) > 60 AND coviddiagnosed = 1 GROUP BY senior");
+        return $result;
+    }
+
     function getDeleteData($data){
         $result = self::db()->delete($data);
         return $result;

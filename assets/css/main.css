@@ -4,6 +4,8 @@
   --pallete-set1-color3: rgb(21, 92, 142);
   --pallete-set1-color4: rgb(23, 146, 158);
   --pallete-set1-color5: rgb(63, 216, 190);
+  --pallete-bg1-color0: rgb(224, 224, 222);
+  --pallete-set3-color0: rgb(39, 39, 39);
   --pallete-set3-color1: rgb(255, 77, 22);
   --pallete-set3-color2: rgb(255, 146, 32);
   --pallete-set3-color3: rgb(255, 228, 101);
@@ -60,7 +62,7 @@ body {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  background-color: var(--pallete-set1-color1);
+  background-color: var(--pallete-bg1-color0);
   font-family: "Roboto";
   transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -68,7 +70,7 @@ body {
 a {
   text-decoration: none;
   text-transform: uppercase;
-  color: var(--pallete-set3-color5);
+  font-family: "Roboto";
 }
 
 .container {
@@ -130,6 +132,12 @@ a {
   width: 100%;
   color: var(--pallete-set3-color5);
 }
+.sidebar-menu .sidebar-menu-wrapper li * {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Roboto";
+  color: var(--pallete-set3-color5);
+}
 .sidebar-menu .sidebar-menu-wrapper li:hover {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background-color: rgba(255, 228, 101, 0.2);
@@ -186,6 +194,10 @@ a {
 }
 .content-title span.title-sub-1 {
   font-size: 18pt;
+}
+
+.card {
+  min-height: 150px;
 }
 
 .card-text {
@@ -252,6 +264,9 @@ a {
 .encounter-data,
 .diagnosed-data,
 .mostinfected-data,
+.minor-data,
+.adult-data,
+.senior-data,
 .disease-data {
   width: 12vw;
   align-items: stretch;
@@ -261,9 +276,30 @@ a {
 .encounter-data .card-body .card-title,
 .diagnosed-data .card-body .card-title,
 .mostinfected-data .card-body .card-title,
+.minor-data .card-body .card-title,
+.adult-data .card-body .card-title,
+.senior-data .card-body .card-title,
 .disease-data .card-body .card-title {
   text-align: center;
-  font-size: 60pt !important;
+  font-size: 40pt !important;
+}
+.encounter-data .card-body .card-title2,
+.diagnosed-data .card-body .card-title2,
+.mostinfected-data .card-body .card-title2,
+.minor-data .card-body .card-title2,
+.adult-data .card-body .card-title2,
+.senior-data .card-body .card-title2,
+.disease-data .card-body .card-title2 {
+  text-align: center;
+}
+.encounter-data .card-body .card-text,
+.diagnosed-data .card-body .card-text,
+.mostinfected-data .card-body .card-text,
+.minor-data .card-body .card-text,
+.adult-data .card-body .card-text,
+.senior-data .card-body .card-text,
+.disease-data .card-body .card-text {
+  text-align: center;
 }
 
 .table-action {

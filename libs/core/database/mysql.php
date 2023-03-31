@@ -29,6 +29,7 @@ class MySQLDBHelper
         $placeholders = implode(", ", array_fill(0, count($data), "?"));
         $sql = "INSERT INTO $table ($fields) VALUES ($placeholders)";
         
+        die(json_encode($data));
         $stmt = mysqli_prepare($conn, $sql);
         if (!$stmt) {
             error_log("Error preparing statement: " . mysqli_error($conn));
