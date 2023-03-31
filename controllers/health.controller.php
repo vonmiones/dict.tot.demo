@@ -13,7 +13,7 @@ class HealthInformationClass
     }
 
 
-    function getTopDiseases($limit=3){
+    function getTopDiseases($limit=5){
         $result = self::db()->selectData("disease, COUNT(*) AS num_cases", $limit);
         return $result;
     }

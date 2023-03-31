@@ -94,9 +94,9 @@ a {
     flex-flow: row nowrap;
     flex-wrap: nowrap;
     height:calc(85vh);
-    // width:calc(90vw);
+    width:calc(90vw);
     margin-top:calc(6vh);
-    // margin-left:calc(5vw);
+    margin-left:calc(7vw);
     // margin-right:calc(5vw);
     overflow: hidden;
   }
@@ -104,7 +104,7 @@ a {
   
   // Sidebars
   .sidebar {
-    width: 200px;
+    // width: 200px;
     display: flex;
     // height:calc(80vh);
     .sidebar-content{
@@ -169,7 +169,7 @@ a {
 .content {
   overflow: auto;
   border-radius: 10px;
-  width:calc(95vw);
+  width:80%;
   background-color: var(--pallete-set3-color5);
 }
 
@@ -219,7 +219,7 @@ width: 100%;
   width: 100%;
 }
 .dataTables_wrapper {
-  width: calc(56vw);
+  width: 100%;
   margin:0 auto;
 }
 #myTable thead th{

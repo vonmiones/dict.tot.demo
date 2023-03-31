@@ -83,12 +83,13 @@ a {
   flex-flow: row nowrap;
   flex-wrap: nowrap;
   height: 85vh;
+  width: 90vw;
   margin-top: 6vh;
+  margin-left: 7vw;
   overflow: hidden;
 }
 
 .sidebar {
-  width: 200px;
   display: flex;
 }
 .sidebar .sidebar-content .header {
@@ -149,7 +150,7 @@ a {
 .content {
   overflow: auto;
   border-radius: 10px;
-  width: 95vw;
+  width: 80%;
   background-color: var(--pallete-set3-color5);
 }
 
@@ -203,7 +204,7 @@ a {
 }
 
 .dataTables_wrapper {
-  width: 56vw;
+  width: 100%;
   margin: 0 auto;
 }
 
