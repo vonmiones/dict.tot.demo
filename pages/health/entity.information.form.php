@@ -1,8 +1,80 @@
+<?php if(isset($_POST['data'])):?>
+<?php $data = $_POST['data'];?>
+<?php 
+$id = $data['id'];
+$fname = $data['fname'];
+$mname = $data['mname'];
+$lname = $data['lname'];
+$suffix = $data['suffix'];
+$sex = $data['sex'];
+$civilstatus = $data['civilstatus'];
+$birthdate = $data['birthdate'];
+$height = $data['height'];
+$weight = $data['weight'];
+$bloodtype = $data['bloodtype'];
+$barangay = $data['barangay'];
+$citymun = $data['citymun'];
+$province = $data['province'];
+$email = $data['email'];
+$contactno = $data['contactno'];
+$contactno2 = $data['contactno2'];
+$isvaccinated = $data['isvaccinated'];
+$vaccinedetails = $data['vaccinedetails'];
+$disease = $data['disease'];
+$symptoms = $data['symptoms'];
+$medicationdetails = $data['medicationdetails'];
+$recommendation = $data['recommendation'];
+$dtcreated = $data['dtcreated'];
+$dtupdate = $data['dtupdate'];
+$remarks = $data['remarks'];
+$datastatus = $data['datastatus'];
+$temp = $data['temp'];
+$coviddiagnosed = $data['coviddiagnosed'];
+$covidencounter = $data['covidencounter'];
+$country = $data['country'];
+?>
+<script>
+$("input[name=fname]").val("<?= $fname;?>");
+$("input[name=mname]").val("<?= $mname;?>");
+$("input[name=lname]").val("<?= $lname;?>");
+$("input[name=suffix]").val("<?= $suffix;?>");
+$("select[name^=sex] option[value=<?= $sex;?>]").attr('selected', "selected");
+$("input[name=civilstatus]").val("<?= $civilstatus;?>");
+$("input[name=birthdate]").val("<?= $birthdate;?>");
+$("input[name=height]").val("<?= $height;?>");
+$("input[name=weight]").val("<?= $weight;?>");
+$("input[name=bloodtype]").val("<?= $bloodtype;?>");
+$("input[name=barangay]").val("<?= $barangay;?>");
+$("input[name=citymun]").val("<?= $citymun;?>");
+$("input[name=province]").val("<?= $province;?>");
+$("input[name=email]").val("<?= $email;?>");
+$("input[name=contactno]").val("<?= $contactno;?>");
+$("input[name=contactno2]").val("<?= $contactno2;?>");
+$("input[name=isvaccinated]:eq(<?= $isvaccinated;?>)").attr('checked', "checked");
+$("input[name=vaccinedetails]").val("<?= $vaccinedetails;?>");
+$("input[name=disease]").val("<?= $disease;?>");
+$("input[name=symptoms]").val("<?= $symptoms;?>");
+$("input[name=medicationdetails]").val("<?= $medicationdetails;?>");
+$("input[name=recommendation]").val("<?= $recommendation;?>");
+$("input[name=dtcreated]").val("<?= $dtcreated;?>");
+$("input[name=dtupdate]").val("<?= $dtupdate;?>");
+$("input[name=remarks]").val("<?= $remarks;?>");
+$("input[name=datastatus]").val("<?= $datastatus;?>");
+$("input[name=temp]").val("<?= $temp;?>");
+$("select[name^=coviddiagnosed] option[value=<?= $coviddiagnosed;?>]").attr('selected', "selected");
+$("select[name^=covidencounter] option[value=<?= $covidencounter;?>]").attr('selected', "selected");
+$("input[name=country]").val("<?= $country;?>");
+</script>
+<?php endif;?>
+
 <div class="content-wrapper">
     <div class="form-header">
     </div>
     <div class="form-container">
         <form id="healthInformationForm" class="needs-validation" novalidate>
+            <?php if($id != ""):?>
+                <input name="id" value="<?=$id;?>" type="hidden">                
+            <?php endif;?>
             <div class="form-wrapper">
                 <div class="form-floating">
                     <input name="fname" required type="text" class="form-control" id="txbFirstName" placeholder="First Name">

@@ -166,7 +166,17 @@ $(document).ready(function() {
         {
             'targets': 10,
             'createdCell':  function (td, cellData, rowData, row, col) {
-              $(td).html('<a class="table-action" href="api.php?method=get&action=edit&id='+rowData.id+'"><i class="fa-solid fa-file-pen"></i></a> <a id="btnDelete" data-id="'+rowData.id+';" class="table-action"><i class="fa-solid fa-trash-can"></i></a>')
+              $(td).html('<a id="btnEdit" class="table-action"><i class="fa-solid fa-file-pen"></i></a> <a id="btnDelete" data-id="'+rowData.id+';" class="table-action"><i class="fa-solid fa-trash-can"></i></a>')
+              $(td).find("#btnEdit").click(function (e) { 
+                e.preventDefault();
+                  $(".modal-title").empty();
+                  $(".modal-footer").empty();
+                  $(".modal-body").empty();
+                  $(".modal-title").text("Health Information Form Data");
+                  $(".modal-body").load("pages/health/entity.information.form.php",{id:rowData.id,data:rowData}, function (response, status, request) {
+                    $("#modal-container").modal("show");
+                  });
+              });
               $(td).find("#btnDelete").click(function (e) { 
                 if (confirm("Do you want to delete this data?") == true) {
                   $(".modal-title").empty();
@@ -243,7 +253,7 @@ $(document).ready(function() {
     $(".modal-body").empty();
     $(".modal-title").text("Health Information Form");
     $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
-    $(".modal-body").load("pages/health/entity.information.form.html", function (response, status, request) {
+    $(".modal-body").load("pages/health/entity.information.form.php", function (response, status, request) {
       $("#modal-container").modal("show");
     });
     $("#btnSave").click(function (e) { 
