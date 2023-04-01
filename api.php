@@ -14,9 +14,18 @@ if(isset($_GET["method"])){
 switch ($method) {
     case 'post':
         switch ($action) {
-            case 'update':
-                break;
             case 'delete':
+                break;
+            case 'update':
+                    $request = "";
+                    $data = array();
+                    foreach ($_POST['data']  as $key => $value) {
+                        $data[$value['name']] = $value['value'];
+                    }
+                    $healthinfo = new HealthInformationClass();
+                    $result = $healthinfo->UpdateCase($data);
+                    header("Content-type: application/json; charset=utf-8");
+                    echo json_encode($result);
                 break;
             case 'create':
                     $request = "";
@@ -162,7 +171,7 @@ switch ($method) {
                     $data = array("id"=>$_GET['id']);
                     
                     $healthinfo = new HealthInformationClass();
-                    $result = $healthinfo->getDeleteData($data);
+                    $result = $healthinfo->DeleteData($data);
                     header("Content-type: application/json; charset=utf-8");
                     echo json_encode(array( "data"=>$result));
                 break;

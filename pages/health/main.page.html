@@ -173,8 +173,37 @@ $(document).ready(function() {
                   $(".modal-footer").empty();
                   $(".modal-body").empty();
                   $(".modal-title").text("Health Information Form Data");
+                  $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
                   $(".modal-body").load("pages/health/entity.information.form.php",{id:rowData.id,data:rowData}, function (response, status, request) {
                     $("#modal-container").modal("show");
+                  });
+                  $("#btnSave").click(function (e) { 
+                      let message;
+                      if (confirm("Do you want to proceed saving your data?") == true) {
+                        message = "You pressed OK!";
+                        let frmData = $("form").serializeArray();
+                        let action = ($("input[name=id]").val() != undefined ?"edit":"create");
+                        console.log(action);
+                        $.ajax({
+                          type:"POST",
+                          url: "api.php?method=post&action=update",
+                          data: {
+                            "data":frmData
+                          },
+                          success: function (response) {   
+                            if (response.result == "success") {
+                              dt.ajax.reload();
+                              getTop3Cases();
+                              $("#modal-container").modal("hide");
+                            } else {
+                              alert("An error occured during submission,\r\nplease check your data.");
+                            }
+                            console.log(response);
+                          }
+                        });
+                      } else {
+                        message = "You canceled!";
+                      }
                   });
               });
               $(td).find("#btnDelete").click(function (e) { 
@@ -261,6 +290,8 @@ $(document).ready(function() {
         if (confirm("Do you want to proceed saving your data?") == true) {
           message = "You pressed OK!";
           let frmData = $("form").serializeArray();
+          let action = ($("input[name=id]").val() != undefined ?"edit":"create");
+          console.log(action);
           $.ajax({
             type:"POST",
             url: "api.php?method=post&action=create",

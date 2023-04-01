@@ -24,6 +24,7 @@ class MySQLDBHelper
             die("Connection failed: " . self::connect()->connect_error);
         }
     }
+
     function create($data) {
         $conn = self::connect();
         $table = "demoentity";
@@ -53,6 +54,8 @@ class MySQLDBHelper
         mysqli_stmt_close($stmt);
         return array("result"=>"success","message"=>$affected_rows);
     }
+
+
     function selectData($fields, $limit) {
         $conn = self::connect();
         if ($conn->connect_error) {
@@ -68,7 +71,7 @@ class MySQLDBHelper
                 $rows[] = $row;;
             }
         } else {
-            echo "0 results";
+            return "0 results";
         }
         $conn->close();
         return $rows;
@@ -107,7 +110,7 @@ class MySQLDBHelper
                 $rows[] = $row;;
             }
         } else {
-            echo "0 results";
+            return "0 results";
         }
         $conn->close();
         return $rows;
@@ -161,54 +164,69 @@ class MySQLDBHelper
         $stmt->close();
         self::connect()->close();
 
-        echo json_encode($result);
+        return json_encode($result);
     }
 
 
-    function update($table,$data)
+    function update($data)
     {
-        $id = $data["id"]; 
-        $fname = $data["fname"];
-        $mname = $data["mname"];
-        $lname = $data["lname"];
-        $suffix = $data["suffix"];
-        $sex = $data["sex"];
-        $civilstatus = $data["civilstatus"];
-        $birthdate = $data["birthdate"];
-        $height = $data["height"];
-        $weight = $data["weight"];
-        $bloodtype = $data["bloodtype"];
-        $barangay = $data["barangay"];
-        $citymun = $data["citymun"];
-        $province = $data["province"];
-        $email = $data["email"];
-        $contactno = $data["contactno"];
-        $contactno2 = $data["contactno2"];
-        $isvaccinated = $data["isvaccinated"];
-        $vaccinedetails = $data["vaccinedetails"];
-        $disease = $data["disease"];
-        $symptoms = $data["symptoms"];
-        $medicationdetails = $data["medicationdetails"];
-        $recommendation = $data["recommendation"];
-        $dtupdate = date("Y-m-d H:i:s");
-        $remarks = $data["remarks"];
+        $conn = self::connect();
+        $msg = "";
+        $fname = htmlspecialchars($data['fname'],ENT_QUOTES);
+        $mname = htmlspecialchars($data['mname'],ENT_QUOTES);
+        $lname = htmlspecialchars($data['lname'],ENT_QUOTES);
+        $suffix = htmlspecialchars($data['suffix'],ENT_QUOTES);
+        $sex = htmlspecialchars($data['sex'],ENT_QUOTES);
+        $civilstatus = htmlspecialchars($data['civilstatus'],ENT_QUOTES);
+        $birthdate = htmlspecialchars($data['birthdate'],ENT_QUOTES);
+        $height = htmlspecialchars($data['height'],ENT_QUOTES);
+        $weight = htmlspecialchars($data['weight'],ENT_QUOTES);
+        $bloodtype = htmlspecialchars($data['bloodtype'],ENT_QUOTES);
+        $barangay = htmlspecialchars($data['barangay'],ENT_QUOTES);
+        $citymun = htmlspecialchars($data['citymun'],ENT_QUOTES);
+        $province = htmlspecialchars($data['province'],ENT_QUOTES);
+        $email = htmlspecialchars($data['email'],ENT_QUOTES);
+        $contactno = htmlspecialchars($data['contactno'],ENT_QUOTES);
+        $contactno2 = htmlspecialchars($data['contactno2'],ENT_QUOTES);
+        $isvaccinated = htmlspecialchars($data['isvaccinated'],ENT_QUOTES);
+        $vaccinedetails = htmlspecialchars($data['vaccinedetails'],ENT_QUOTES);
+        $disease = htmlspecialchars($data['disease'],ENT_QUOTES);
+        $symptoms = htmlspecialchars($data['symptoms'],ENT_QUOTES);
+        $medicationdetails = htmlspecialchars($data['medicationdetails'],ENT_QUOTES);
+        $recommendation = htmlspecialchars($data['recommendation'],ENT_QUOTES);
+        $remarks = htmlspecialchars($data['remarks'],ENT_QUOTES);
+        $datastatus = htmlspecialchars($data['datastatus'],ENT_QUOTES);
+        $temp = htmlspecialchars($data['temp'],ENT_QUOTES);
+        $coviddiagnosed = htmlspecialchars($data['coviddiagnosed'],ENT_QUOTES);
+        $covidencounter = htmlspecialchars($data['covidencounter'],ENT_QUOTES);
+        $id = $data['id'];
 
-        $stmt = self::connect()->prepare("UPDATE `demoentity` SET `fname`=?, `mname`=?, `lname`=?, `suffix`=?, `sex`=?, `civilstatus`=?, `birthdate`=?, `height`=?, `weight`=?, `bloodtype`=?, `barangay`=?, `citymun`=?, `province`=?, `email`=?, `contactno`=?, `contactno2`=?, `isvaccinated`=?, `vaccinedetails`=?, `disease`=?, `symptoms`=?, `medicationdetails`=?, `recommendation`=?, `dtupdate`=?, `remarks`=? WHERE `id`=?");
-
-        $stmt->bind_param("sssssssssssssssssssssssi", $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $dtupdate, $remarks, $id);
-
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            echo "Record updated successfully.";
-        } else {
-            echo "Record was not updated.";
+        $sql = "UPDATE demoentity SET fname = ?, mname = ?, lname = ?, suffix = ?, sex = ?, civilstatus = ?, birthdate = ?, height = ?, weight = ?, bloodtype = ?, barangay = ?, citymun = ?, province = ?, email = ?, contactno = ?, contactno2 = ?, isvaccinated = ?, vaccinedetails = ?, disease = ?, symptoms = ?, medicationdetails = ?, recommendation = ?, remarks = ?, datastatus = ?, temp = ?, coviddiagnosed = ?, covidencounter = ? WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            return ("Error preparing statement: " . mysqli_error($conn));
+            // return false;
         }
 
-        $stmt->close();
-        self::connect()->close();
+        mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssi", $fname, $mname, $lname, $suffix, $sex, $civilstatus, $birthdate, $height, $weight, $bloodtype, $barangay, $citymun, $province, $email, $contactno, $contactno2, $isvaccinated, $vaccinedetails, $disease, $symptoms, $medicationdetails, $recommendation, $remarks, $datastatus, $temp, $coviddiagnosed, $covidencounter, $id);
 
+        $result = mysqli_stmt_execute($stmt);
+        if (!$result) {
+            $msg = ("Error executing statement: " . mysqli_error($conn));
+            // $msg = false;
+        }
 
+        $affected_rows = mysqli_stmt_affected_rows($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+
+        if ($affected_rows > 0) {
+            $msg = "Record updated successfully.";
+            return array("result"=>"success","message"=>$msg);
+        } else {
+            $msg = "Record was not updated.";
+            return array("result"=>"success","message"=>$msg);
+        }
     }
 
     function delete($data){

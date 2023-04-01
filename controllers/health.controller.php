@@ -12,6 +12,10 @@ class HealthInformationClass
         return self::db()->create($data);
     }
 
+    function UpdateCase($data){
+        return self::db()->update($data);
+    }
+
 
     function getTopDiseases($limit=5){
         $result = self::db()->selectData("disease, COUNT(*) AS num_cases", $limit);
@@ -48,7 +52,7 @@ class HealthInformationClass
         return $result;
     }
 
-    function getDeleteData($data){
+    function DeleteData($data){
         $result = self::db()->delete($data);
         return $result;
     }

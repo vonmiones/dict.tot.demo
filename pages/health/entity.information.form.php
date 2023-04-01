@@ -37,7 +37,9 @@ $country = $data['country'];
 $("input[name=fname]").val("<?= $fname;?>");
 $("input[name=mname]").val("<?= $mname;?>");
 $("input[name=lname]").val("<?= $lname;?>");
-$("input[name=suffix]").val("<?= $suffix;?>");
+<?php if($suffix != ""):?>
+    $("select[name^=suffix] option[value=<?= $suffix;?>]").attr('selected', "selected");
+<?php endif;?>
 $("select[name^=sex] option[value=<?= $sex;?>]").attr('selected', "selected");
 $("input[name=civilstatus]").val("<?= $civilstatus;?>");
 $("input[name=birthdate]").val("<?= $birthdate;?>");
@@ -72,9 +74,6 @@ $("input[name=country]").val("<?= $country;?>");
     </div>
     <div class="form-container">
         <form id="healthInformationForm" class="needs-validation" novalidate>
-            <?php if($id != ""):?>
-                <input name="id" value="<?=$id;?>" type="hidden">                
-            <?php endif;?>
             <div class="form-wrapper">
                 <div class="form-floating">
                     <input name="fname" required type="text" class="form-control" id="txbFirstName" placeholder="First Name">
@@ -248,6 +247,9 @@ $("input[name=country]").val("<?= $country;?>");
                     <label class="btn btn-outline-primary" for="btnradio2">Recommend for Hospital Admission</label>
                 </div>
             </div>
+            <?php if($id != ""):?>
+                <input name="id" value="<?=$id;?>" type="hidden">                
+            <?php endif;?>
         </form>
     </div>
 </div>
