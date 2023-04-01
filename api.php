@@ -100,10 +100,16 @@ switch ($method) {
                 echo json_encode(array("result"=>"success","message"=>"Dummy data Initialized"));
                 break;
             case 'all':
+                    $draw = isset($_REQUEST['draw'])? $_REQUEST['draw']:"";
+                    $start = isset($_REQUEST['start'])? $_REQUEST['start']:"";
+                    $length = isset($_REQUEST['length'])? $_REQUEST['length']:"";
+                    $searchValue = isset($_REQUEST['searchValue'])? $_REQUEST['searchValue']:"";
+                    
                     $healthinfo = new HealthInformationClass();
-                    $result = $healthinfo->getAllEntities();
+                    $result = $healthinfo->getAllEntities($draw,$start,$length,$searchValue);
                     header("Content-type: application/json; charset=utf-8");
-                    echo json_encode(array( "data"=>$result));
+
+                    echo $result;
                 break;
                 
             case 'topdiseases':

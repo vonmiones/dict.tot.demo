@@ -57,8 +57,30 @@ class HealthInformationClass
         return $result;
     }
 
-    function getAllEntities(){
-        $result = self::db()->getAll();
+    function getAllEntities($draw,$start,$length,$searchValue){
+        // $result = self::db()->selectCustomData("SELECT *,CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname  ) as `name` FROM demoentity LIMIT 1000");
+        // construct the SQL query with pagination and search parameters
+        $sql = "SELECT id,sex,birthdate,disease,temp,coviddiagnosed,covidencounter,isvaccinated,citymun,country, CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) AS `name` FROM demoentity";
+        $sql .= " WHERE CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) LIKE '%$searchValue%'";
+        $sql .= " ORDER BY lname ASC LIMIT $start, $length";
+
+        // retrieve the data from the database
+        $data = self::db()->selectCustomData($sql);
+
+        // get the total number of records in the database
+        $totalRecords = count($data);
+
+        // get the total number of records after filtering with the search parameter
+        $filterRecords = count(self::db()->selectCustomData("$sql WHERE CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) LIKE '%$searchValue%'"));
+
+        // create the JSON response with the required format for DataTables
+        $result = json_encode(array(
+            "draw" => intval($draw),
+            "recordsTotal" => intval($totalRecords),
+            "recordsFiltered" => intval($filterRecords),
+            "data" => $data
+        ));
+
         return $result;
     }
 }

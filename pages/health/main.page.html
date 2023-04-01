@@ -76,6 +76,7 @@
 </div>
 
 <script>
+  
 $(document).ready(function() {
   function deleteData(id){
     if (confirm("Do you want to proceed deleting this data?") == true) {
@@ -98,9 +99,38 @@ $(document).ready(function() {
 
     }
   }
+
   var dt = $('#myTable').DataTable( {
-      "bAutoWidth": false,
-      ajax: 'api.php?method=get&action=all',
+    "bAutoWidth": false,
+      // processing: true,
+      // serverSide: true,
+      // ajax: 'api.php?method=get&action=all',
+      "processing": true,
+      "serverSide": true,
+      "ajax": {
+          "url": 'api.php?method=get&action=all',
+          "type": "POST",
+          "dataSrc": "data",
+          "data": function (d) {
+            console.log(d);
+            d.method = "get";
+            d.action = "all";
+            // d.draw = 1; // set the draw parameter to 1
+            // d.start = d.start; // set the start parameter to the DataTables 'start' parameter
+            // d.length = d.length; // set the length parameter to the DataTables 'length' parameter
+            // d.search.value = d.search.value; // set the search parameter to the DataTables 'search' parameter
+          },
+          "success": function (data) {
+            setTimeout(() => {
+              console.log("Data retrieved from server:", data);
+              dt.clear().rows.add(data.data).draw();              
+            }, 5000);
+         },
+         "error": function(xhr, error, thrown) {
+            console.log("An error occurred while retrieving data:", thrown);
+            // perform error handling here
+        }
+      },
       columns: [
             { data: 'name' },
             { data: 'sex' },

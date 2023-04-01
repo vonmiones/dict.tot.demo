@@ -239,6 +239,11 @@ function makeCOVIDChart(ageGroup,url,element,backgroundColor="rgba(255, 99, 132,
         data: chartData,
         options: chartOptions
       });
+
+      // setInterval(() => {
+      //   chart.update();
+      //   console.log("Updating Chart");
+      // }, 1000);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.error("AJAX Error: " + textStatus, errorThrown);

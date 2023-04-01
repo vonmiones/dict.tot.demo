@@ -101,7 +101,7 @@ class MySQLDBHelper
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $sql = "SELECT *,CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname  ) as `name` FROM demoentity";
+        $sql = "SELECT *,CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname  ) as `name` FROM demoentity LIMIT 1000";
         $result = $conn->query($sql);
 
         $rows = array();
