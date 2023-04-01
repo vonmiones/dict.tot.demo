@@ -43,7 +43,7 @@
           <tr>
               <th>Name</th>
               <th>Sex</th>
-              <th>Birth Date</th>
+              <th>Age</th>
               <th>Case</th>
               <th>Temp</th>
               <th>Diagnosis</th>
@@ -59,7 +59,7 @@
           <tr>
               <th>Name</th>
               <th>Sex</th>
-              <th>Birth Date</th>
+              <th>Age</th>
               <th>Case</th>
               <th>Temp</th>
               <th>Diagnosis</th>
@@ -122,6 +122,14 @@ $(document).ready(function() {
       },
 
       'columnDefs': [
+        {
+            'targets': 2,
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                let bdate = ((new Date().getFullYear())-(new Date(rowData.birthdate).getFullYear()));
+                $(td).css("text-align","center");
+                $(td).html(bdate);
+              }
+        },
         {
             'targets': 5,
               'createdCell':  function (td, cellData, rowData, row, col) {
