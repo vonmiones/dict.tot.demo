@@ -3,7 +3,7 @@ global $config;
 $config["title"] = "";
 
 $config["dbhost"] = "localhost";
-$config["dbport"] = "3308";
+$config["dbport"] = "3306";
 $config["dbname"] = "dict_tot";
 $config["dbuser"] = "root";
 $config["dbpass"] = "";
