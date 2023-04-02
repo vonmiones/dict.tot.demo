@@ -33,12 +33,12 @@
   scrollbar-width: thin;
   scrollbar-color: #ffcc00 #DFE9EB;
   transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
 }
 
 /* Chrome, Edge and Safari */
 *::-webkit-scrollbar {
   width: 2px;
+  height: 2px;
   transition: all 1s  cubic-bezier(0.175, 0.885, 0.32, 1.275);  
 }
 *::-webkit-scrollbar-track {

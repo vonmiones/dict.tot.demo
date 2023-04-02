@@ -60,24 +60,49 @@ class HealthInformationClass
     function getAllEntities($draw,$start,$length,$searchValue){
         // $result = self::db()->selectCustomData("SELECT *,CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname  ) as `name` FROM demoentity LIMIT 1000");
         // construct the SQL query with pagination and search parameters
-        $sql = "SELECT id,sex,birthdate,disease,temp,coviddiagnosed,covidencounter,isvaccinated,citymun,country, CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) AS `name` FROM demoentity";
+
+        $start = ($draw-1)*$length;
+        //$length = $draw;
+
+        $sql = "SELECT CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) AS `name`,sex,birthdate,disease,temp,coviddiagnosed,covidencounter,isvaccinated,citymun,country,id FROM demoentity";
         $sql .= " WHERE CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) LIKE '%$searchValue%'";
-        $sql .= " ORDER BY lname ASC LIMIT $start, $length";
+        $sql .= " ORDER BY lname ASC LIMIT $length OFFSET $start;
+        ";
 
         // retrieve the data from the database
+        $total = self::db()->getDataCount();
         $data = self::db()->selectCustomData($sql);
 
         // get the total number of records in the database
-        $totalRecords = count($data);
+        $totalRecords = $total[0]['total'];
 
         // get the total number of records after filtering with the search parameter
         $filterRecords = count(self::db()->selectCustomData("$sql WHERE CONCAT(fname,' ', SUBSTRING(mname,1,1), '. ', lname) LIKE '%$searchValue%'"));
 
+        $xd = [];
+        foreach ($data as $key => $value) {
+            $xd[] = array_values($value);
+        }
+
         // create the JSON response with the required format for DataTables
         $result = json_encode(array(
             "draw" => intval($draw),
-            "recordsTotal" => intval($totalRecords),
-            "recordsFiltered" => intval($filterRecords),
+            "recordsTotal" =>  intval($totalRecords),
+            "recordsFiltered" =>  intval($totalRecords),
+            "data" => $xd
+        ));
+
+        return $result;
+    }
+
+    function getSingleData($id){
+
+        $sql = "SELECT * FROM demoentity";
+        $sql .= " WHERE id = $id";
+        $data = self::db()->selectCustomData($sql);
+
+        // create the JSON response with the required format for DataTables
+        $result = json_encode(array(
             "data" => $data
         ));
 

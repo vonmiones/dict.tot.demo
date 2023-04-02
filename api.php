@@ -101,9 +101,9 @@ switch ($method) {
                 break;
             case 'all':
                     $draw = isset($_REQUEST['draw'])? $_REQUEST['draw']:"";
-                    $start = isset($_REQUEST['start'])? $_REQUEST['start']:"";
+                    $start = isset($_REQUEST['start'])? $_REQUEST['draw']:"";
                     $length = isset($_REQUEST['length'])? $_REQUEST['length']:"";
-                    $searchValue = isset($_REQUEST['searchValue'])? $_REQUEST['searchValue']:"";
+                    $searchValue = isset($_REQUEST['search'])? $_REQUEST['search']['value']:"";
                     
                     $healthinfo = new HealthInformationClass();
                     $result = $healthinfo->getAllEntities($draw,$start,$length,$searchValue);
@@ -111,7 +111,7 @@ switch ($method) {
 
                     echo $result;
                 break;
-                
+ 
             case 'topdiseases':
                     $healthinfo = new HealthInformationClass();
                     $count = isset($_GET["count"])?$_GET["count"]:3;

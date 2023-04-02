@@ -1,6 +1,41 @@
-<?php if(isset($_POST['data'])):?>
-<?php $data = $_POST['data'];?>
+<?php if(isset($_POST['id'])):?>
 <?php 
+    global $config;
+    $rid = $_REQUEST['id'];
+    require_once "../../config.php";
+
+    $servername = $config["dbhost"];
+    $port = $config["dbport"];
+    $username = $config["dbuser"];
+    $password = $config["dbpass"];
+    $dbname = $config["dbname"];
+
+    $conn =  new mysqli($servername, $username, $password, $dbname, $port);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    
+    $sql = "SELECT * FROM demoentity";
+    $sql .= " WHERE id = $rid";
+
+    $result = $conn->query($sql);
+
+    $data = array();
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $data[] = $row;;
+        }
+    } else {
+        $result = "0 results";
+    }
+    $conn->close();
+$data = $data[0];
 $id = $data['id'];
 $fname = $data['fname'];
 $mname = $data['mname'];

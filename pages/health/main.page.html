@@ -51,6 +51,7 @@
               <th>Is Vaccinated</th>
               <th>City / Municipality</th>
               <th>Country</th>
+              <th>Actions</th>
           </tr>
       </thead>
       <tbody>
@@ -68,6 +69,7 @@
               <th>Nationality</th>
               <th>City / Municipality</th>
               <th>Country</th>
+              <th>Actions</th>
           </tr>
       </tfoot>
   </table>
@@ -100,82 +102,163 @@ $(document).ready(function() {
     }
   }
 
-  var dt = $('#myTable').DataTable( {
-    "bAutoWidth": false,
-      // processing: true,
-      // serverSide: true,
-      // ajax: 'api.php?method=get&action=all',
-      "processing": true,
-      "serverSide": true,
-      "ajax": {
-          "url": 'api.php?method=get&action=all',
-          "type": "POST",
-          "dataSrc": "data",
-          "data": function (d) {
-            console.log(d);
-            d.method = "get";
-            d.action = "all";
-            // d.draw = 1; // set the draw parameter to 1
-            // d.start = d.start; // set the start parameter to the DataTables 'start' parameter
-            // d.length = d.length; // set the length parameter to the DataTables 'length' parameter
-            // d.search.value = d.search.value; // set the search parameter to the DataTables 'search' parameter
-          },
-          "success": function (data) {
-            setTimeout(() => {
-              console.log("Data retrieved from server:", data);
-              dt.clear().rows.add(data.data).draw();              
-            }, 5000);
-         },
-         "error": function(xhr, error, thrown) {
-            console.log("An error occurred while retrieving data:", thrown);
-            // perform error handling here
-        }
-      },
-      columns: [
-            { data: 'name' },
-            { data: 'sex' },
-            { data: 'birthdate' },
-            { data: 'disease' },
-            { data: 'temp' },
-            { data: 'coviddiagnosed' },
-            { data: 'covidencounter' },
-            { data: 'isvaccinated' },
-            { data: 'citymun' },
-            { data: 'country' },
-            { data: 'id' }
-        ],
-      buttons: [
-          'copy', 'excel', 'pdf'
-      ],
-      'createdRow': function( row, data, dataIndex ) {
-          $(row).attr('data-id', data.id);
-      },
 
-      'columnDefs': [
+
+//
+// Pipelining function for DataTables. To be used to the `ajax` option of DataTables
+//
+$.fn.dataTable.pipeline = function (opts) {
+    // Configuration options
+    var conf = $.extend(
+        {
+            pages: 5, // number of pages to cache
+            url:  '', // script url
+            data: null, // function or object with parameters to send to the server
+            // matching how `ajax.data` works in DataTables
+            method: 'POST', // Ajax HTTP method
+        },
+        opts
+    );
+ 
+    // Private variables for storing the cache
+    var cacheLower = -1;
+    var cacheUpper = null;
+    var cacheLastRequest = null;
+    var cacheLastJson = null;
+ 
+    return function (request, drawCallback, settings) {
+        var ajax = false;
+        var requestStart = request.start;
+        var drawStart = request.start;
+        var requestLength = request.length;
+        var requestEnd = requestStart + requestLength;
+ 
+        if (settings.clearCache) {
+            // API requested that the cache be cleared
+            ajax = true;
+            settings.clearCache = false;
+        } else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) {
+            // outside cached data - need to make a request
+            ajax = true;
+        } else if (
+            JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
+            JSON.stringify(request.columns) !== JSON.stringify(cacheLastRequest.columns) ||
+            JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
+        ) {
+            // properties changed (ordering, columns, searching)
+            ajax = true;
+        }
+ 
+        // Store the request for checking next time around
+        cacheLastRequest = $.extend(true, {}, request);
+ 
+        if (ajax) {
+            // Need data from the server
+            if (requestStart < cacheLower) {
+                requestStart = requestStart - requestLength * (conf.pages - 1);
+ 
+                if (requestStart < 0) {
+                    requestStart = 0;
+                }
+            }
+ 
+            cacheLower = requestStart;
+            cacheUpper = requestStart + requestLength * conf.pages;
+ 
+            request.start = requestStart;
+            request.length = requestLength * conf.pages;
+ 
+            // Provide the same `data` options as DataTables.
+            if (typeof conf.data === 'function') {
+                // As a function it is executed with the data object as an arg
+                // for manipulation. If an object is returned, it is used as the
+                // data object to submit
+                var d = conf.data(request);
+                if (d) {
+                    $.extend(request, d);
+                }
+            } else if ($.isPlainObject(conf.data)) {
+                // As an object, the data given extends the default
+                $.extend(request, conf.data);
+            }
+ 
+            return $.ajax({
+                type: conf.method,
+                url: conf.url,
+                data: request,
+                dataType: 'json',
+                cache: false,
+                success: function (json) {
+                    cacheLastJson = $.extend(true, {}, json);
+ 
+                    if (cacheLower != drawStart) {
+                        json.data.splice(0, drawStart - cacheLower);
+                    }
+                    if (requestLength >= -1) {
+                        json.data.splice(requestLength, json.data.length);
+                    }
+                    console.log(json);
+                    drawCallback(json);
+                },
+            });
+        } else {
+            json = $.extend(true, {}, cacheLastJson);
+            json.draw = request.draw; // Update the echo for each response
+            json.data.splice(0, requestStart - cacheLower);
+            json.data.splice(requestLength, json.data.length);
+ 
+            drawCallback(json);
+        }
+    };
+};
+ 
+// Register an API method that will empty the pipelined data, forcing an Ajax
+// fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+$.fn.dataTable.Api.register('clearPipeline()', function () {
+    return this.iterator('table', function (settings) {
+        settings.clearCache = true;
+    });
+});
+//
+// DataTables initialisation
+//
+$(document).ready(function () {
+    let dt = $('#myTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: $.fn.dataTable.pipeline({
+            type: "POST",
+            dataSrc: "data",
+            url: 'api.php?method=get&action=all'
+        }),
+        'createdRow': function( row, data, dataIndex ) {
+            $(row).attr('data-id', data.id);
+        },'columnDefs': [
         {
             'targets': 2,
               'createdCell':  function (td, cellData, rowData, row, col) {
-                let bdate = ((new Date().getFullYear())-(new Date(rowData.birthdate).getFullYear()));
+                let birthyear =  cellData.split("-")[0];
+                let current = new Date().getFullYear();
+                let age = current-birthyear;
                 $(td).css("text-align","center");
-                $(td).html(bdate);
+                $(td).html(age);
               }
         },
         {
             'targets': 5,
               'createdCell':  function (td, cellData, rowData, row, col) {
                 let status = '<span class="badge rounded-pill bg-danger">COVID-19 Positive</span>';
-                if(rowData.coviddiagnosed == 0){
+                if(cellData == 0){
                   status = '<span class="badge rounded-pill bg-success">Negative</span>';
                 }
                 $(td).css("text-align","center");
                 $(td).html(status);
               }
-        },
-        {
+        },{
             'targets': 6,
               'createdCell':  function (td, cellData, rowData, row, col) {
                 let status = '<span class="badge rounded-pill bg-warning text-dark">Yes</span>';
-                if(rowData.covidencounter == 0){
+                if(cellData == 0){
                   status = '<span class="badge rounded-pill bg-success">No</span>';
                 }
                 $(td).css("text-align","center");
@@ -186,7 +269,7 @@ $(document).ready(function() {
             'targets': 7,
               'createdCell':  function (td, cellData, rowData, row, col) {
                 let status = '<span class="badge rounded-pill bg-secondary">Unvaccinated</span>';
-                switch ( parseInt(rowData.isvaccinated)) {
+                switch ( parseInt(cellData)) {
                   case 0:                    
                   status = '<span class="badge rounded-pill bg-dark">Unvaccinated</span>';
                     break;
@@ -205,75 +288,77 @@ $(document).ready(function() {
             'targets': 10,
             'createdCell':  function (td, cellData, rowData, row, col) {
               $(td).html('<a id="btnEdit" class="table-action"><i class="fa-solid fa-file-pen"></i></a> <a id="btnDelete" data-id="'+rowData.id+';" class="table-action"><i class="fa-solid fa-trash-can"></i></a>')
-              $(td).find("#btnEdit").click(function (e) { 
-                e.preventDefault();
-                  $(".modal-title").empty();
-                  $(".modal-footer").empty();
-                  $(".modal-body").empty();
-                  $(".modal-title").text("Health Information Form Data");
-                  $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
-                  $(".modal-body").load("pages/health/entity.information.form.php",{id:rowData.id,data:rowData}, function (response, status, request) {
-                    $("#modal-container").modal("show");
-                  });
-                  $("#btnSave").click(function (e) { 
-                      let message;
-                      if (confirm("Do you want to proceed saving your data?") == true) {
-                        message = "You pressed OK!";
-                        let frmData = $("form").serializeArray();
-                        let action = ($("input[name=id]").val() != undefined ?"edit":"create");
-                        console.log(action);
-                        $.ajax({
-                          type:"POST",
-                          url: "api.php?method=post&action=update",
-                          data: {
-                            "data":frmData
-                          },
-                          success: function (response) {   
-                            if (response.result == "success") {
-                              dt.ajax.reload();
-                              getTop3Cases();
-                              $("#modal-container").modal("hide");
-                            } else {
-                              alert("An error occured during submission,\r\nplease check your data.");
-                            }
-                            console.log(response);
-                          }
-                        });
-                      } else {
-                        message = "You canceled!";
-                      }
-                  });
-              });
-              $(td).find("#btnDelete").click(function (e) { 
-                if (confirm("Do you want to delete this data?") == true) {
-                  $(".modal-title").empty();
-                  $(".modal-footer").empty();
-                  $(".modal-body").empty();
+            $(td).find("#btnEdit").click(function (e) { 
+              e.preventDefault();
+                $(".modal-title").empty();
+                $(".modal-footer").empty();
+                $(".modal-body").empty();
+                $(".modal-title").text("Health Information Form Data");
+                $(".modal-footer").html("<button class='btn btn-primary' id='btnSave'>Save</button><button type='reset' class='btn btn-secondary' id='btnReset'>Reset</button>");
+                $(".modal-body").load("pages/health/entity.information.form.php",{id:rowData[10]}, function (response, status, request) {
                   $("#modal-container").modal("show");
-                  $(".modal-title").text("Health Information Form Data");
-                  $(".modal-body").text("Please wait as we process the deletion of the data.");
-                  $.ajax({
-                    type: "GET",
-                    url: "api.php?method=get&action=delete&id="+$(this).data("id"),
-                    success: function (response) {
-                      setTimeout(() => {                        
-                        $("#modal-container").modal("hide");
-                          dt.ajax.reload();
-                          getTop3Cases();
-                      }, 500);
+                });
+                $("#btnSave").click(function (e) { 
+                    let message;
+                    if (confirm("Do you want to proceed saving your data?") == true) {
+                      message = "You pressed OK!";
+                      let frmData = $("form").serializeArray();
+                      let action = ($("input[name=id]").val() != undefined ?"edit":"create");
+                      console.log(action);
+                      $.ajax({
+                        type:"POST",
+                        url: "api.php?method=post&action=update",
+                        data: {
+                          "data":frmData
+                        },
+                        success: function (response) {   
+                          if (response.result == "success") {
+                            dt.ajax.reload();
+                            getTop3Cases();
+                            $("#modal-container").modal("hide");
+                          } else {
+                            alert("An error occured during submission,\r\nplease check your data.");
+                          }
+                          console.log(response);
+                        }
+                      });
+                    } else {
+                      message = "You canceled!";
                     }
-                  });
-                }
-                else{
+                });
+            });
+            $(td).find("#btnDelete").click(function (e) { 
+              if (confirm("Do you want to delete this data?") == true) {
+                $(".modal-title").empty();
+                $(".modal-footer").empty();
+                $(".modal-body").empty();
+                $("#modal-container").modal("show");
+                $(".modal-title").text("Health Information Form Data");
+                $(".modal-body").text("Please wait as we process the deletion of the data.");
+                $.ajax({
+                  type: "GET",
+                  url: "api.php?method=get&action=delete&id="+rowData[10],
+                  success: function (response) {
+                    setTimeout(() => {                        
+                      $("#modal-container").modal("hide");
+                        dt.ajax.reload();
+                        getTop3Cases();
+                    }, 500);
+                  }
+                });
+              }
+              else{
 
-                }
-              });
+              }
+            });
             }
         }
       ]
-  } );
+    });
+});
 
-  dt.ajax.reload();
+
+
   function getTop3Cases() { 
     $.ajax({
       url: "api.php?method=get&action=topdiseases&count=5",

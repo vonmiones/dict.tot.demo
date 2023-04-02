@@ -95,6 +95,25 @@ class MySQLDBHelper
         return $rows;
     }
     
+    function getDataCount() {
+        $conn = self::connect();
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $result = $conn->query("SELECT COUNT(*) as `total` FROM demoentity");
+
+        $rows = array();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $rows[] = $row;;
+            }
+        } else {
+            $result = "0 results";
+        }
+        $conn->close();
+        return $rows;
+    }
+    
     function getAll(){
         $conn = self::connect();
         if ($conn->connect_error) {
