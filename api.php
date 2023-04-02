@@ -185,9 +185,15 @@ switch ($method) {
             }
         break;
     default:
+            $draw = isset($_REQUEST['draw'])? $_REQUEST['draw']:"";
+            $start = isset($_REQUEST['start'])? $_REQUEST['draw']:"";
+            $length = isset($_REQUEST['length'])? $_REQUEST['length']:"";
+            $searchValue = isset($_REQUEST['search'])? $_REQUEST['search']['value']:"";
+            
             $healthinfo = new HealthInformationClass();
-            $result = $healthinfo->getAllEntities();
+            $result = $healthinfo->getAllEntities($draw,$start,$length,$searchValue);
             header("Content-type: application/json; charset=utf-8");
-            echo json_encode(array( "data"=>$result));
+
+            echo $result;
         break;
 }
