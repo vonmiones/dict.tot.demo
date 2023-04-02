@@ -1,6 +1,50 @@
-<div class="content-wrapper" style="background-color: black;">
-<div class="sidebar">
-Sidebar
+<div class="content-wrapper">
+    <div class="flex flex-direction-row-80vh">
+        <div class="flex-direction-column" style="padding:10px; max-width:300px; border-right:1px dashed rgb(255, 192, 130);">
+            <div class="sidebar">
+                <div class="sidebar-content">
+                    <ul class="contact-us">
+                        <h5>GROUP V</h5>
+                        <li>
+                            <a class="toggle-menu-trigger">Our CV</a>
+                            <ul class="contact-cv">
+                                <li>
+                                    <a href="pages/contactus/cv.ronald.html"><i class="fa-solid fa-caret-right"></i> Ronald E. Chipoco</a>
+                                </li>
+                                <li>
+                                    <a href="pages/contactus/cv.von.html"><i class="fa-solid fa-caret-right"></i> Von Microbert T. Miones</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="toggle-menu-trigger">Contact Form</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="contactus-content" class="content" style="padding:10px;">
+            content
+        </div>
+    </div>
 </div>
-<div class="content">content</div>
-</div>
+<script>
+    $(document).ready(function () {
+        $(".toggle-menu-trigger").each(function (i, el) { 
+            $(el).click(function (e) { 
+                e.preventDefault();
+                $(el).siblings('ul').slideToggle(300);
+            });
+        });
+        $(".contact-cv a").each(function (i, el) { 
+            $(el).click(function (e) { 
+                e.preventDefault();
+                if($(el).attr("href") != undefined){
+                    $("#contactus-content").load($(el).attr("href"));
+                }
+            });
+        });
+        $("#contactus-content").load("pages/contactus/form.html");
+    });
+</script>

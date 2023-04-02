@@ -1,0 +1,67 @@
+<h3>System Initialization</h3>
+<p>Once all the requirements have been met and the server has been set up, follow these steps:</p>
+<ol>
+    <li>Create a database using the manual MySQL database creation method:</li>
+    <ul>
+        <li>Open MySQL console</li>
+        <li>Enter the following command to create a blank database named dict_tot:</li>
+        <code>CREATE DATABASE dict_tot;</code>
+    </ul>
+    <li>Table Creation: Diseases
+        <p>Use the following SQL script to create a table named "diseases" with the following fields:</p>
+        <p>SQL Script:</p>
+        <code>CREATE TABLE diseases (
+            id INT(11) NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            description TEXT NULL,
+            symptoms TEXT NULL,
+            treatment TEXT NULL,
+            dtcreated DATETIME NOT NULL,
+            dtupdated DATETIME NULL,
+            datastatus ENUM('Active', 'Inactive') NOT NULL,
+            PRIMARY KEY (id)
+        );
+        </code>
+    </li>
+    <li>
+        Table Creation: Demoentity
+        <p>Use the following SQL script to create a table named "demoentity" with the following fields:</p>
+        <p>SQL Script:</p>
+            <code>
+            CREATE TABLE demoentity (
+                id INT(11) NOT NULL AUTO_INCREMENT,
+                fname VARCHAR(50) NOT NULL,
+                mname VARCHAR(50),
+                lname VARCHAR(50) NOT NULL,
+                suffix VARCHAR(10),
+                sex VARCHAR(10) NOT NULL,
+                civilstatus VARCHAR(20) NOT NULL,
+                birthdate DATE NOT NULL,
+                height FLOAT(4, 1),
+                weight FLOAT(4, 1),
+                bloodtype VARCHAR(5),
+                barangay VARCHAR(50) NOT NULL,
+                citymun VARCHAR(50) NOT NULL,
+                province VARCHAR(50) NOT NULL,
+                email VARCHAR(100),
+                contactno VARCHAR(20) NOT NULL,
+                contactno2 VARCHAR(20),
+                isvaccinated ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
+                vaccinedetails VARCHAR(255),
+                disease VARCHAR(50),
+                symptoms TEXT,
+                medicationdetails TEXT,
+                recommendation TEXT,
+                dtcreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+                dtupdate DATETIME ON UPDATE CURRENT_TIMESTAMP,
+                remarks TEXT,
+                datastatus ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Active',
+                temp FLOAT(4, 1),
+                coviddiagnosed ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
+                covidencounter ENUM('Yes', 'No') NOT NULL DEFAULT 'No',
+                country VARCHAR(50) DEFAULT 'Philippines',
+                PRIMARY KEY (id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+            </code>
+    </li>
+</ol>

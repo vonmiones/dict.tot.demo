@@ -1,0 +1,68 @@
+<div class="content-wrapper">
+    <div class="flex flex-direction-row-80vh">
+        <div class="flex-direction-column" style="padding:10px; max-width:300px; border-right:1px dashed rgb(255, 192, 130);">
+            <div class="sidebar">
+                <div class="sidebar-content">
+                    <ul class="documentation">
+                        <h5>DOCUMENTATION</h5>
+                        <li>
+                            <a class="toggle-menu-trigger">Requirements <i class="fa fa-caret-down" style="float:right;" aria-hidden="true"></i></a>
+                            <ul>
+                                <li>
+                                    <a href="pages/documentation/hardwaresystem.html">Hardware</a>
+                                </li>
+                                <li>
+                                    <a href="pages/documentation/software.html">Software</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="toggle-menu-trigger">Installation  <i class="fa fa-caret-down" style="float:right;" aria-hidden="true"></i></a>
+                            <ul>
+                                <li>
+                                    <a href="pages/documentation/install.setup.html">Server Setup</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="toggle-menu-trigger">Database Initialization  <i class="fa fa-caret-down" style="float:right;" aria-hidden="true"></i></a>
+                            <ul>
+                                <li>
+                                    <a href="pages/documentation/create.database.html">Manual DB Creation</a>
+                                    <ul>
+                                        
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="pages/documentation/create.dbmds.html">Using DBMDS Tool</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="documentation-content" class="content" style="padding:10px;">
+            content
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".toggle-menu-trigger").each(function (i, el) { 
+            $(el).click(function (e) { 
+                e.preventDefault();
+                $(el).siblings('ul').slideToggle(300);
+            });
+        });
+        $(".documentation a").each(function (i, el) { 
+            $(el).click(function (e) { 
+                e.preventDefault();
+                if($(el).attr("href") != undefined){
+                    $("#documentation-content").load($(el).attr("href"));
+                }
+            });
+        });
+        $("#documentation-content").load("pages/documentation/about.html");
+    });
+</script>

@@ -1,0 +1,152 @@
+<h1>Creating Database and Table with Navicat</h1>
+<hr>
+
+<h2>Installing Navicat</h2>
+<p>First, we need to download and install Navicat. Navicat is a powerful database management tool that allows us to create and manage databases with ease. You can download Navicat from their official website at <a href="https://www.navicat.com/en/download/navicat-premium">https://www.navicat.com/en/download/navicat-premium</a>. Follow the instructions provided by the installer to complete the installation process.</p>
+<img src="pages/documentation/assets/navicat_installation.png" alt="Navicat Installation Screenshot">
+
+<h2>Establishing Connection</h2>
+<p>After installing Navicat, we need to establish a connection to our database server. Open Navicat and click on "New Connection" to create a new connection profile. Enter the necessary details such as the database server name, port number, username, and password. Once done, click on "Test Connection" to check if the connection is successful.</p>
+<img style="width:500px;" src="pages/documentation/assets/navicat_connection.png" alt="Navicat Connection Screenshot">
+
+<h2>Creating Database</h2>
+<p>Once the connection is established, we can now create a new database. Right-click on the database server and select "New Database". Enter the name of the database, in this case, we will name it "dict_tot". Click on "Create" to create the database.</p>
+<img src="pages/documentation/assets/navicat_create_database.png" alt="Navicat Create Database Screenshot">
+
+<h2>Creating Table</h2>
+<p>Now that we have created our database, we can now create a table. Right-click on the database and select "New Table". Enter the necessary details such as the name of the table, the number of columns, and the data types of the columns. For this LGU system, we will create a table named "demoentity" with the following columns:</p>
+
+<table  class="table">
+	<tr>
+		<th>Column Name</th>
+		<th>Data Type</th>
+	</tr>
+	<tr>
+		<td>id</td>
+		<td>int</td>
+	</tr>
+	<tr>
+		<td>fname</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>mname</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>lname</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>suffix</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>sex</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>civilstatus</td>
+		<td>varchar</td>
+	</tr>
+	<tr>
+		<td>birthdate</td>
+		<td>date</td>
+	</tr>
+	<tr>
+		<td>height</td>
+		<td>float</td>
+	</tr>
+	<tr>
+		<td>weight</td>
+		<td>float</td>
+	</tr>
+    <tr>
+        <td>bloodtype</td>
+        <td>varchar(5)</td>
+    </tr>
+    <tr>
+        <td>barangay</td>
+        <td>varchar(50)</td>
+    </tr>
+    <tr>
+        <td>citymun</td>
+        <td>varchar(50)</td>
+    </tr>
+    <tr>
+        <td>province</td>
+        <td>varchar(50)</td>
+    </tr>
+    <tr>
+        <td>email</td>
+        <td>varchar(100)</td>
+    </tr>
+    <tr>
+        <td>contactno</td>
+        <td>varchar(20)</td>
+    </tr>
+    <tr>
+        <td>contactno2</td>
+        <td>varchar(20)</td>
+    </tr>
+    <tr>
+        <td>isvaccinated</td>
+        <td>tinyint</td>
+    </tr>
+    <tr>
+        <td>vaccinedetails</td>
+        <td>text</td>
+    </tr>
+    <tr>
+        <td>disease</td>
+        <td>varchar(50)</td>
+    </tr>
+    <tr>
+        <td>symptoms</td>
+        <td>text</td>
+    </tr>
+    <tr>
+        <td>medicationdetails</td>
+        <td>text</td>
+    </tr>
+    <tr>
+        <td>recommendation</td>
+        <td>text</td>
+    </tr>
+    <tr>
+        <td>dtcreated</td>
+        <td>datetime</td>
+    </tr>
+    <tr>
+        <td>dtupdated</td>
+        <td>datetime</td>
+    </tr>
+    <tr>
+        <td>remarks</td>
+        <td>text</td>
+    </tr>
+    <tr>
+        <td>datastatus</td>
+        <td>tinyint</td>
+    </tr>
+    <tr>
+        <td>temp</td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <td>coviddiagnosed</td>
+        <td>tinyint</td>
+    </tr>
+    <tr>
+        <td>covidencounter</td>
+        <td>tinyint</td>
+    </tr>
+    <tr>
+        <td>country</td>
+        <td>varchar(50)</td>
+    </tr>
+</table>
+<p>Once the table has been created, you can start inserting data into it using SQL queries or through the Navicat interface.</p>
+<img src="pages/documentation/assets/navicat.png" alt="Navicat Interface">
+<p>In the Navicat interface, you can easily insert data into your table by opening the table and clicking on the "Insert" button. From there, you can enter values for each field and save the record.</p>
+<p>With this table and database set up, you can now start building your LGU system and storing user data in a secure and organized way.</p>    
