@@ -36,7 +36,7 @@
     }
     $conn->close();
 $data = $data[0];
-$id = $data['id'];
+$id = $data['id']; 
 $fname = $data['fname'];
 $mname = $data['mname'];
 $lname = $data['lname'];
